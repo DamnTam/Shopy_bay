@@ -12,7 +12,7 @@ RichText shopyBayText(BuildContext context, {double fontSize = 28}) {
           fontSize: fontSize),
       children: <TextSpan>[
         TextSpan(
-            text: 'Craze',
+            text: 'Bay',
             style: TextStyle(
                 color: Colors.amber,
                 fontStyle: FontStyle.italic,

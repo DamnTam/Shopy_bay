@@ -4,19 +4,20 @@ import 'package:shopy_bay/controller/product_controller.dart';
 import '../utility/app_colors.dart';
 import '../widgets/product_card.dart';
 
-class IndividualCategoriesScrren extends StatefulWidget {
-  const IndividualCategoriesScrren(
+class IndividualCategoriesScreen extends StatefulWidget {
+  const IndividualCategoriesScreen(
       {super.key, this.categoryName, required this.categoryId});
 
   final String? categoryName;
   final int categoryId;
 
   @override
-  State<IndividualCategoriesScrren> createState() =>
-      _IndividualCategoriesScrrenState();
+  State<IndividualCategoriesScreen> createState() =>
+      _IndividualCategoriesScreenState();
 }
 
-class _IndividualCategoriesScrrenState extends State<IndividualCategoriesScrren> {
+class _IndividualCategoriesScreenState
+    extends State<IndividualCategoriesScreen> {
   @override
   void initState() {
     super.initState();
@@ -48,10 +49,14 @@ class _IndividualCategoriesScrrenState extends State<IndividualCategoriesScrren>
                   GetBuilder<ProductController>(builder: (productController) {
                 return Visibility(
                   visible: productController.isLoading == false,
-                  replacement: Center(child: CircularProgressIndicator()),
+                  replacement: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                   child: Visibility(
-                    visible: productController.productModel.ProductList?.isNotEmpty??false,
-                    replacement: Center(child: Text('Not available'),),
+                    visible: productController.productModel.ProductList?.isNotEmpty ?? false,
+                    replacement: Center(
+                      child: Text('Not available'),
+                    ),
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: MediaQuery.of(context).orientation ==
@@ -60,13 +65,17 @@ class _IndividualCategoriesScrrenState extends State<IndividualCategoriesScrren>
                             : 3,
                         childAspectRatio:
                             MediaQuery.of(context).size.width * 0.003,
-                        mainAxisSpacing: MediaQuery.of(context).size.width * 0.02,
+                        mainAxisSpacing:
+                            MediaQuery.of(context).size.width * 0.02,
                       ),
-                      itemCount: productController.productModel.ProductList?.length??0,
+                      itemCount:
+                          productController.productModel.ProductList?.length ??
+                              0,
                       itemBuilder: (context, index) {
                         return ProductCard(
-                            product: productController
-                                .productModel.ProductList![index]);
+                          product: productController
+                              .productModel.ProductList![index],
+                        );
                       },
                     ),
                   ),

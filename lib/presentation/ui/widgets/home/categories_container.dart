@@ -24,7 +24,7 @@ class _CategoriesContainerState extends State<CategoriesContainer> {
       children: [
         InkWell(
           onTap: () {
-            Get.to(IndividualCategoriesScrren(
+            Get.to(IndividualCategoriesScreen(
               categoryName: widget.category.categoryName,
               categoryId: widget.category.id??0,
             ));

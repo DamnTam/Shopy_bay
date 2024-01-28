@@ -21,7 +21,7 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implement initStatee
     super.initState();
     Get.find<ProductDetailsController>().getProductDetails(widget.id);
   }

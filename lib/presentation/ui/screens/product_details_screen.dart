@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopy_bay/data/models/product_details_model.dart';
 import 'package:shopy_bay/presentation/ui/screens/review_screen.dart';
 import 'package:shopy_bay/presentation/ui/widgets/product_details/products_details_carousel.dart';
 
+import '../../../controller/product_details_controller.dart';
 import '../utility/app_colors.dart';
 import '../widgets/product_details/color_selector.dart';
 import '../widgets/product_details/size_selector.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({super.key});
+  const ProductDetailsScreen({super.key, required this.id});
+
+  final int id;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get.find<ProductDetailsController>().getProductDetails(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +36,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ProductDetailsCarousel(onTap: () {}),
-                  const SizedBox(height: 10),
-                  const ProductDetailsBody(),
-                ],
-              ),
+              child: GetBuilder<ProductDetailsController>(
+                  builder: (productDetailsController) {
+                return Column(
+                  children: [
+                    ProductDetailsCarousel(onTap: () {}, imageUrls: [
+                      productDetailsController.productDetails.img1 ?? '',
+                      productDetailsController.productDetails.img2 ?? '',
+                      productDetailsController.productDetails.img3 ?? '',
+                      productDetailsController.productDetails.img4 ?? '',
+                    ]),
+                    const SizedBox(height: 10),
+                    Visibility(
+                        visible: productDetailsController.isLoading == false,
+                        replacement:
+                            const Center(child: LinearProgressIndicator()),
+                        child: ProductDetailsBody(
+                          productDetails:
+                              productDetailsController.productDetails,
+                        )),
+                  ],
+                );
+              }),
             ),
           ),
           buildCheckoutContainer
@@ -89,7 +115,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 }
 
 class ProductDetailsBody extends StatefulWidget {
-  const ProductDetailsBody({super.key});
+  const ProductDetailsBody({super.key, required this.productDetails});
+
+  final ProductDetails productDetails;
 
   @override
   State<ProductDetailsBody> createState() => _ProductDetailsBodyState();
@@ -123,9 +151,9 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                   child: Text(
-                'Happy new year special deal save 50%',
+                widget.productDetails.product?.title ?? '',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               )),
               InkWell(
@@ -135,7 +163,8 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
                   });
                 },
                 child: buildCounterContainer(
-                    icon: const Icon(Icons.remove), color: counter == 1 ? Colors.grey : AppColors.primaryColor),
+                    icon: const Icon(Icons.remove),
+                    color: counter == 1 ? Colors.grey : AppColors.primaryColor),
               ),
               const SizedBox(width: 5),
               Text('$counter', style: TextStyle(fontSize: 24)),
@@ -158,26 +187,26 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
                 color: Colors.yellow,
                 size: 24,
               ),
-              const Text(
-                '4.5',
+              Text(
+                widget.productDetails.product?.star?.toStringAsFixed(2) ?? '',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.w600),
               ),
               const SizedBox(width: 10),
-               InkWell(
-                 onTap: (){
-                   Get.to(()=>ReviewScreen());
-                 },
-                 child: Text(
+              InkWell(
+                onTap: () {
+                  Get.to(() => ReviewScreen());
+                },
+                child: Text(
                   'Reviews',
                   style: TextStyle(
                       color: AppColors.primaryColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w600),
-                               ),
-               ),
+                ),
+              ),
               const SizedBox(width: 10),
               Card(
                 color: AppColors.primaryColor,
@@ -210,7 +239,7 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 5),
           SizeSelector(
-              sizes: _sizes,
+              sizes: widget.productDetails.size!.split(','),
               onTap: (isSelectedSize) {
                 isSelectedSize = isSelectedSize;
               }),
@@ -218,26 +247,8 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
           const Text('Description',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 5),
-          const Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc. '
-            'Sed euismod, diam quis accumsan placerat, '
-            'nisl nunc ullamcorper nunc, ut gravida magna nisl nec nunc.',
+          Text(
+            widget.productDetails.product?.shortDes ?? '',
             style: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
           ),

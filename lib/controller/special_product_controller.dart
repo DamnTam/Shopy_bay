@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:shopy_bay/data/models/remark_product_list_model.dart';
+import 'package:shopy_bay/data/models/product_list_model.dart';
 
 import '../data/service/network_caller.dart';
 import '../data/utilities/urls.dart';

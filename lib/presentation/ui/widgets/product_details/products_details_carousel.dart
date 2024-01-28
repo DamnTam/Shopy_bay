@@ -1,13 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:shopy_bay/controller/product_details_controller.dart';
+import 'package:shopy_bay/data/models/product_details_model.dart';
 import '../../utility/app_colors.dart';
+import 'package:get/get.dart';
 
 class ProductDetailsCarousel extends StatefulWidget {
   const ProductDetailsCarousel({
     super.key,
-    required this.onTap,
+    required this.onTap, required this.imageUrls,
   });
-
+  final List<String> imageUrls;
   final VoidCallback onTap;
 
   @override
@@ -17,27 +20,38 @@ class ProductDetailsCarousel extends StatefulWidget {
 class _ProductDetailsCarouselState extends State<ProductDetailsCarousel> {
   final ValueNotifier<int> _index = ValueNotifier<int>(0);
 
-  List<int> items = List.generate(5, (index) => index);
+ // List<int> items = List.generate(5, (index) => index);
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+   // final height = MediaQuery.of(context).size.height;
     return Stack(children: [
       Column(
         children: [
           CarouselSlider(
-            items: items
+            items: widget.imageUrls
                 .map(
-                  (index) => Container(
+                  (urls) => Container(
                     margin: const EdgeInsets.symmetric(horizontal: 1.5),
                     decoration: BoxDecoration(
                       color: Colors.grey,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Center(
-                      child: Image.asset('assets/images/shoe2.png',
-                          width: width * 0.45),
+                    child: GetBuilder<ProductDetailsController>(
+                      builder: (productDetailsController) {
+                        return Visibility(
+                          visible: productDetailsController.isLoading==false,
+                          replacement: const Center(child: CircularProgressIndicator()),
+                          child: Center(
+                            child: Image.network(
+                              urls,
+                              fit: BoxFit.cover,
+                              width: width * 0.45,
+                            )
+                          ),
+                        );
+                      }
                     ),
                   ),
                 )
@@ -60,19 +74,21 @@ class _ProductDetailsCarouselState extends State<ProductDetailsCarousel> {
           builder: (_, value, __) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: items.map((e) {
-                return Container(
+              children: [
+                for(int i=0;i<widget.imageUrls.length;i++)
+                 Container(
                   width: 10.0,
                   height: 10.0,
                   margin: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 2.0),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _index.value == e
+                      color: _index.value == i
                           ? AppColors.primaryColor
                           : Colors.white),
-                );
-              }).toList(),
+                )
+              ],
+
             );
           },
         ),

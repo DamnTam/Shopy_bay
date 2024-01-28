@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopy_bay/data/models/remark_product_list_model.dart';
+import 'package:shopy_bay/data/models/product_list_model.dart';
 
 import '../screens/product_details_screen.dart';
 import '../utility/app_colors.dart';
@@ -24,7 +24,7 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-       Get.to(ProductDetailsScreen());
+       Get.to(ProductDetailsScreen(id: widget.product.id!,));
       },
       child: AspectRatio(
         aspectRatio: MediaQuery.of(context).size.height*0.0012,

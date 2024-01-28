@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/controller/counter_controller.dart';
 import 'package:shopy_bay/controller/create_profile_controller.dart';
+import 'package:shopy_bay/controller/product_details_controller.dart';
 import 'package:shopy_bay/controller/read_profile_controller.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
 import 'controller/category_list_controller.dart';
@@ -29,5 +30,6 @@ class GetBinding extends Bindings {
     Get.put(SpecialProductController());
     Get.put(NewProductController());
     Get.put(ProductController());
+    Get.put(ProductDetailsController());
   }
 }

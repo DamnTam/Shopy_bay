@@ -18,16 +18,17 @@ class _SizeSelectorState extends State<SizeSelector> {
     // TODO: implement initState
     super.initState();
     isSelectedSize=widget.sizes.first;
+    widget.onTap(isSelectedSize);
   }
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: widget.sizes.map((s) => InkWell(
+      children: widget.sizes.map((size) => InkWell(
         splashColor: Colors.transparent,
         onTap: (){
-          widget.onTap(s);
+          widget.onTap(size);
           setState(() {
-            isSelectedSize=s;
+            isSelectedSize=size;
           });
         },
         child: Container(
@@ -35,13 +36,13 @@ class _SizeSelectorState extends State<SizeSelector> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Colors.grey.withOpacity(.4)),
-              color: isSelectedSize==s?AppColors.primaryColor:Colors.white,
+              color: isSelectedSize==size?AppColors.primaryColor:Colors.white,
             ),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(s, style: TextStyle(
-                    color: isSelectedSize==s?Colors.white:Colors.black,
+                child: Text(size, style: TextStyle(
+                    color: isSelectedSize==size?Colors.white:Colors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.w600
                 ),),

@@ -28,6 +28,7 @@ class _CartScreenState extends State<CartScreen> {
           leading: IconButton(
               onPressed: () {
                 Get.find<MainBottomNavController>().changeIndex(0);
+                Get.back();
               },
               icon: const Icon(Icons.arrow_back_ios)),
           centerTitle: true,

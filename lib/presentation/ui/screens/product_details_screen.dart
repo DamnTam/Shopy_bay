@@ -1,9 +1,13 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopy_bay/controller/add_to_cart_controller.dart';
+import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/data/models/product_details_model.dart';
+import 'package:shopy_bay/presentation/ui/screens/AuthScreen/email_screen.dart';
+import 'package:shopy_bay/presentation/ui/screens/cart_screen.dart';
 import 'package:shopy_bay/presentation/ui/screens/review_screen.dart';
 import 'package:shopy_bay/presentation/ui/widgets/product_details/products_details_carousel.dart';
-
 import '../../../controller/product_details_controller.dart';
 import '../utility/app_colors.dart';
 import '../widgets/product_details/color_selector.dart';
@@ -19,11 +23,17 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  String? _isSelectedColor;
+
+  String? _isSelectedSize;
+
   @override
   void initState() {
     // TODO: implement initStatee
     super.initState();
-    Get.find<ProductDetailsController>().getProductDetails(widget.id);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<ProductDetailsController>().getProductDetails(widget.id);
+    });
   }
 
   @override
@@ -32,41 +42,45 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       appBar: AppBar(
         title: const Text('Product Details'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: GetBuilder<ProductDetailsController>(
-                  builder: (productDetailsController) {
-                return Column(
-                  children: [
-                    ProductDetailsCarousel(onTap: () {}, imageUrls: [
-                      productDetailsController.productDetails.img1 ?? '',
-                      productDetailsController.productDetails.img2 ?? '',
-                      productDetailsController.productDetails.img3 ?? '',
-                      productDetailsController.productDetails.img4 ?? '',
-                    ]),
-                    const SizedBox(height: 10),
-                    Visibility(
-                        visible: productDetailsController.isLoading == false,
-                        replacement:
-                            const Center(child: LinearProgressIndicator()),
-                        child: ProductDetailsBody(
-                          productDetails:
-                              productDetailsController.productDetails,
-                        )),
-                  ],
-                );
-              }),
+      body: GetBuilder<ProductDetailsController>(
+          builder: (productDetailsController) {
+        return Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: GetBuilder<ProductDetailsController>(
+                    builder: (productDetailsController) {
+                  return Column(
+                    children: [
+                      ProductDetailsCarousel(onTap: () {}, imageUrls: [
+                        productDetailsController.productDetails.img1 ?? '',
+                        productDetailsController.productDetails.img2 ?? '',
+                        productDetailsController.productDetails.img3 ?? '',
+                        productDetailsController.productDetails.img4 ?? '',
+                      ]),
+                      const SizedBox(height: 10),
+                      Visibility(
+                          visible: productDetailsController.isLoading == false,
+                          replacement:
+                              const Center(child: LinearProgressIndicator()),
+                          child: ProductDetailsBody(
+                            productDetails:
+                                productDetailsController.productDetails,
+                          )),
+                    ],
+                  );
+                }),
+              ),
             ),
-          ),
-          buildCheckoutContainer
-        ],
-      ),
+            buildCheckoutContainer(
+                productDetails: productDetailsController.productDetails)
+          ],
+        );
+      }),
     );
   }
 
-  Container get buildCheckoutContainer {
+  Container buildCheckoutContainer({required ProductDetails productDetails}) {
     return Container(
       height: 85,
       decoration: BoxDecoration(
@@ -101,49 +115,58 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
               ],
             ),
-            ElevatedButton(
-                onPressed: () {},
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  child: Text('Add to Cart'),
-                ))
+            GetBuilder<AddToCartController>(
+              builder: (addToCartController) {
+                return Visibility(
+                  visible: addToCartController.isLoading == false,
+                  replacement: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        log(Get.find<AuthController>().token.toString());
+                        if (Get.find<AuthController>().token == null) {
+                          Get.showSnackbar(GetSnackBar(
+                            message: 'Please Login First',
+                            duration: const Duration(seconds: 2),
+                          ));
+                          Get.offAll(() => const EmailScreen());
+                          return;
+                        } else {
+                          log('is color selected $_isSelectedColor');
+                          log('is size selected $_isSelectedSize');
+                          if (_isSelectedColor != null && _isSelectedSize != null) {
+                            _isSelectedColor= colorToHashColorCode(_isSelectedColor!);
+                            log('is color selected $_isSelectedColor');
+                            final response = await Get.find<AddToCartController>()
+                                .addToCart(
+                                    widget.id, _isSelectedColor!, _isSelectedSize!);
+                            if (response) Get.to(() => const CartScreen());
+                          } else {
+                            Get.showSnackbar(
+                              GetSnackBar(
+                                message: 'Please Select Color and Size',
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      child:  Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        child: Text('Add to Cart'),
+                      )),
+                );
+              }
+            )
           ],
         ),
       ),
     );
   }
-}
 
-class ProductDetailsBody extends StatefulWidget {
-  const ProductDetailsBody({super.key, required this.productDetails});
-
-  final ProductDetails productDetails;
-
-  @override
-  State<ProductDetailsBody> createState() => _ProductDetailsBodyState();
-}
-
-class _ProductDetailsBodyState extends State<ProductDetailsBody> {
-  final List<Color> _colors = [
-    Colors.red,
-    Colors.blue,
-    Colors.green,
-    Colors.yellow,
-    Colors.orange,
-  ];
-  final List<String> _sizes = [
-    'S',
-    'M',
-    'L',
-    'XL',
-    'XXL',
-  ];
-  String isSelectedSize = 'S';
-  Color isSelectedColor = Colors.purple;
-  int counter = 1;
-
-  @override
-  Widget build(BuildContext context) {
+  Padding ProductDetailsBody({required ProductDetails productDetails}) {
+    int counter = 1;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -153,7 +176,7 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
             children: [
               Expanded(
                   child: Text(
-                widget.productDetails.product?.title ?? '',
+                productDetails.product?.title ?? '',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               )),
               InkWell(
@@ -188,7 +211,7 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
                 size: 24,
               ),
               Text(
-                widget.productDetails.product?.star?.toStringAsFixed(2) ?? '',
+                productDetails.product?.star?.toStringAsFixed(2) ?? '',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -229,26 +252,33 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
           const Text('Color',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 5),
-          ColorSelector(
-              colors: _colors,
-              onTap: (isSelectedColor) {
-                isSelectedColor = isSelectedColor;
-              }),
+          if (productDetails.color != null)
+            ColorSelector(
+                colors: productDetails.color!
+                    .split(',')
+                    .map((color) => getColorFromString(color))
+                    .toList(),
+                onTap: (isSelectedColor) {
+                  log(isSelectedColor.toString());
+                  _isSelectedColor = isSelectedColor.toString();
+                }),
           const SizedBox(height: 10),
           const Text('Size',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 5),
-          SizeSelector(
-              sizes: widget.productDetails.size!.split(','),
-              onTap: (isSelectedSize) {
-                isSelectedSize = isSelectedSize;
-              }),
+          if (productDetails.size != null)
+            SizeSelector(
+                sizes: productDetails.size!.split(','),
+                onTap: (isSelectedSize) {
+                  log(isSelectedSize.toString());
+                  _isSelectedSize = isSelectedSize.toString();
+                }),
           const SizedBox(height: 10),
           const Text('Description',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 5),
           Text(
-            widget.productDetails.product?.shortDes ?? '',
+            productDetails.product?.shortDes ?? '',
             style: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
           ),
@@ -270,5 +300,18 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
         child: icon,
       ),
     );
+  }
+
+  Color getColorFromString(String ColorCode) {
+    String codeString = ColorCode.replaceAll("#", "");
+    String code = '0xff$codeString';
+    return Color(int.parse(code));
+  }
+
+  String colorToHashColorCode(String colorCode) {
+    return colorCode.toString()
+        .replaceAll('0xff', '#')
+        .replaceAll('Color(', '')
+        .replaceAll(')', '');
   }
 }

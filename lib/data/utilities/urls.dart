@@ -9,6 +9,7 @@ class Urls{
   static String popularProductUrl='$_baseUrl/ListProductByRemark/popular';
   static String specialProductUrl='$_baseUrl/ListProductByRemark/special';
   static String newProductUrl='$_baseUrl/ListProductByRemark/new';
+  static String addToCartUrl='$_baseUrl/CreateCartList';
   static String ListProductByCategoryIdUrl(int id)=>'$_baseUrl/ListProductByCategory/$id';
   static String productDetailsByIdUrl(int id)=>'$_baseUrl/ProductDetailsById/$id';
 }

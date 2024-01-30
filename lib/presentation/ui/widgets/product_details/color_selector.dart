@@ -15,24 +15,25 @@ class _ColorSelectorState extends State<ColorSelector> {
     // TODO: implement initState
     super.initState();
     isSelectedColor=widget.colors.first;
+    widget.onTap(isSelectedColor);
   }
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: widget.colors.map((e) => InkWell(
+      children: widget.colors.map((color) => InkWell(
         splashColor: Colors.transparent,
         onTap: (){
-          widget.onTap(e);
+          widget.onTap(color);
           setState(() {
-            isSelectedColor=e;
+            isSelectedColor=color;
           });
         },
         child: Padding(
           padding: const EdgeInsets.only(right: 5),
           child: CircleAvatar(
-            backgroundColor: e,
+            backgroundColor: color,
             radius: 12,
-            child: isSelectedColor==e?Icon(Icons.check, color: Colors.white):null,
+            child: isSelectedColor==color?Icon(Icons.check, color: Colors.white):null,
           ),
         ),
       )).toList(),

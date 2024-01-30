@@ -24,7 +24,7 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-       Get.to(ProductDetailsScreen(id: widget.product.id!,));
+       Get.to(ProductDetailsScreen(id: widget.product.id??0,));
       },
       child: AspectRatio(
         aspectRatio: MediaQuery.of(context).size.height*0.0012,

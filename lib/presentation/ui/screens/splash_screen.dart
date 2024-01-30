@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -7,8 +6,9 @@ import 'package:shopy_bay/presentation/ui/utility/app_colors.dart';
 import 'package:shopy_bay/presentation/ui/utility/assets_path.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/presentation/ui/widgets/shopybay_text.dart';
+
 import '../../../controller/auth_controller.dart';
-import 'AuthScreen/email_screen.dart';
+
 
 
 class SplashScreen extends StatefulWidget {
@@ -28,10 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void moveToNextScreen() async {
-    final isLoggedIn = await Get.find<AuthController>().isLoggedIn();
-    log('isLoggedIn: $isLoggedIn');
+    await Get.find<AuthController>().initialize();
     await Future.delayed(const Duration(seconds: 2))
-        .then((value) => Get.offAll(() => isLoggedIn ? const BottomNavScreen() : const EmailScreen()));
+        .then((value) => Get.offAll(() => const BottomNavScreen()));
   }
 
   @override

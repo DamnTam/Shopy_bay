@@ -43,9 +43,10 @@ class NetWorkCaller {
       required Map<String, dynamic>? body,
       required String token}) async {
     log('url: $url');
+    log('body: $body');
     Response response = await post(Uri.parse(url), body: body, headers: {
       'token': token.toString(),
-      'Content-Type': 'application/json'
+      //'Content-Type': 'application/json'
     });
     if (response.statusCode == 200) {
       log('statusCode: ${response.statusCode}');

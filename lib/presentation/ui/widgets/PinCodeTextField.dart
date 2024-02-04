@@ -7,7 +7,7 @@ PinCodeTextField buildPinCodeTextField(BuildContext context,TextEditingControlle
   return PinCodeTextField(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     controller: otpController,
-    length: 4,
+    length: 6,
     obscureText: false,
     animationType: AnimationType.fade,
     pinTheme: PinTheme(

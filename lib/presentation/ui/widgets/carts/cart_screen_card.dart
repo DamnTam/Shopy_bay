@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopy_bay/controller/cart_controller.dart';
+import 'package:shopy_bay/controller/delete_cart_controller.dart';
+import 'package:shopy_bay/data/models/cart_model.dart';
 
 import '../../../../controller/counter_controller.dart';
 import '../../utility/app_colors.dart';
 
 class CartScreenCard extends StatefulWidget {
-   CartScreenCard({Key? key,}) : super(key: key);
+  CartScreenCard({
+    Key? key, required this.cartItem,
+  }) : super(key: key);
+  final CartItem cartItem;
+  //final int counter;
 
   @override
   State<CartScreenCard> createState() => _CartScreenCardState();
 }
 
 class _CartScreenCardState extends State<CartScreenCard> {
- // final CounterController counterController = Get.put(CounterController(),tag: UniqueKey().toString());
+  // final CounterController counterController = Get.put(CounterController(),tag: UniqueKey().toString());
+  int counter = 1;
 
   @override
   Widget build(BuildContext context) {
     double cardWidth = MediaQuery.of(context).size.width * 0.8;
-   // double cardHeight = MediaQuery.of(context).size.height * 0.16;
+    // double cardHeight = MediaQuery.of(context).size.height * 0.16;
     return Card(
       color: Colors.white,
       elevation: 3,
@@ -36,23 +44,21 @@ class _CartScreenCardState extends State<CartScreenCard> {
                   width: .7,
                 ),
               ),
-
             ),
             width: cardWidth * 0.35,
             height: cardWidth * 0.45,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: const Image(
-                image: AssetImage('assets/images/shoe2.png'),
-               // fit: BoxFit.cover,
-              ),
+              child: Image.network(
+                widget.cartItem.product?.image??''
+              )
             ),
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
-               // vertical: 0,
+                // vertical: 0,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,29 +67,39 @@ class _CartScreenCardState extends State<CartScreenCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Nike Air Max 270',
+                        widget.cartItem.product?.title??'Product Title',
                         style: TextStyle(
-                          fontSize: cardWidth * 0.07,
+                          fontSize: cardWidth * 0.055,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Icon(
-                        Icons.delete_rounded,
-                        color: Colors.red.shade400,
-                        size: cardWidth * 0.07,
+                      GetBuilder<DeleteCartController>(
+                        builder: (deleteController) {
+                          return InkWell(
+                            onTap: ()async{
+                              deleteController.deleteCard(widget.cartItem.product?.id??0);
+                              await Get.find<CartController>().getCart();
+                            },
+                            child: Icon(
+                              Icons.delete_rounded,
+                              color: Colors.red.shade400,
+                              size: cardWidth * 0.07,
+                            ),
+                          );
+                        }
                       )
                     ],
                   ),
                   Row(
                     children: [
                       Text(
-                        'Color: Red',
+                        'Color: ${widget.cartItem.color}',
                         style: TextStyle(
                             fontSize: cardWidth * 0.05, color: Colors.grey),
                       ),
                       SizedBox(width: cardWidth * 0.02),
                       Text(
-                        'Size: 9',
+                        'Size: ${widget.cartItem.size}',
                         style: TextStyle(
                             fontSize: cardWidth * 0.05, color: Colors.grey),
                       ),
@@ -94,53 +110,56 @@ class _CartScreenCardState extends State<CartScreenCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$150',
+                        '\$${widget.cartItem.price}',
                         style: TextStyle(
                           fontSize: cardWidth * 0.07,
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      GetBuilder<CounterController>(
-                        builder: (counterController){
-                          return Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        counterController.decrement();
-                                      },
-                                      child: buildCounterContainer(
-                                        color:counterController.counter == 1
-                                            ? AppColors.primaryColor.withOpacity(.4)
-                                            : AppColors.primaryColor,
-                                        icon: const Icon(Icons.remove),
-                                      ),
-                                    ),
-                                    SizedBox(width: cardWidth * 0.01),
-                                    Text(
-                                      '${counterController.counter}',
-                                      style: TextStyle(
-                                        fontSize: cardWidth * 0.05,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    SizedBox(width: cardWidth * 0.01),
-                                    InkWell(
-                                      onTap: () {
-                                        counterController.increment();
-                                      },
-                                      child: buildCounterContainer(
-                                        icon: const Icon(Icons.add),
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ),
-                                  ],
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              if(counter>1)
+                              counter--;
+                              Get.find<CartController>().updateQuantity(widget.cartItem.id??0, counter);
+                              setState(() {
 
-                          );
-                        }
+                              });
+                            },
+                            child: buildCounterContainer(
+                              color: counter == 1
+                                  ? AppColors.primaryColor.withOpacity(.4)
+                                  : AppColors.primaryColor,
+                              icon: const Icon(Icons.remove),
+                            ),
+                          ),
+                          SizedBox(width: cardWidth * 0.01),
+                          Text(
+                            '${widget.cartItem.qty}',
+                            style: TextStyle(
+                              fontSize: cardWidth * 0.05,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(width: cardWidth * 0.01),
+                          InkWell(
+                            onTap: () {
+                              counter++;
+                              Get.find<CartController>().updateQuantity(widget.cartItem.id!, counter);
+                              setState(() {
+                                
+                              });
+                            },
+                            child: buildCounterContainer(
+                              icon: const Icon(Icons.add),
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ],
                       ),
-
                     ],
                   ),
                 ],

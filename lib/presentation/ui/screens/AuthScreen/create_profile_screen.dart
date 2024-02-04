@@ -18,7 +18,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
   TextEditingController _mobileNumberController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
   TextEditingController _shippingAddressController = TextEditingController();
@@ -68,19 +67,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your first name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      controller: _lastNameController,
-                      decoration: const InputDecoration(
-                        hintText: 'Last Name',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your last name';
                         }
                         return null;
                       },
@@ -143,7 +129,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 if(_formKey.currentState!.validate()){
                                   final response= await createProfileController.createProfile(
                                     _firstNameController.text,
-                                    _lastNameController.text,
                                     _mobileNumberController.text,
                                     _cityController.text,
                                     _shippingAddressController.text,

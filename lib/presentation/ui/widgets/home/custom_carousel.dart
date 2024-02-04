@@ -40,12 +40,11 @@ class _CustomCarouselState extends State<CustomCarousel> {
                     children: [
                       Image.network(
                        product.image.toString(),
-                        width: width * 0.43,
-                        fit: BoxFit.cover,
+                        width: width * 0.40,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                            Wrap(
                             children: [

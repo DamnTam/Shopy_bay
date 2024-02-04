@@ -23,8 +23,7 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  String? _isSelectedColor;
-
+  Color? _isSelectedColor;
   String? _isSelectedSize;
 
   @override
@@ -35,6 +34,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       Get.find<ProductDetailsController>().getProductDetails(widget.id);
     });
   }
+  int counter = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -107,7 +107,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  '\$150.00',
+                  '\$${productDetails.product?.price ?? ''}',
                   style: TextStyle(
                       fontSize: 24,
                       color: AppColors.primaryColor,
@@ -115,50 +115,48 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
               ],
             ),
-            GetBuilder<AddToCartController>(
-              builder: (addToCartController) {
-                return Visibility(
-                  visible: addToCartController.isLoading == false,
-                  replacement: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        log(Get.find<AuthController>().token.toString());
-                        if (Get.find<AuthController>().token == null) {
-                          Get.showSnackbar(GetSnackBar(
-                            message: 'Please Login First',
-                            duration: const Duration(seconds: 2),
-                          ));
-                          Get.offAll(() => const EmailScreen());
-                          return;
-                        } else {
+            GetBuilder<AddToCartController>(builder: (addToCartController) {
+              return Visibility(
+                visible: addToCartController.isLoading == false,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: ElevatedButton(
+                    onPressed: () async {
+                      log(Get.find<AuthController>().token.toString());
+                      if (Get.find<AuthController>().token == null) {
+                        Get.showSnackbar(GetSnackBar(
+                          message: 'Please Login First',
+                          duration: const Duration(seconds: 2),
+                        ));
+                        Get.offAll(() => const EmailScreen());
+                        return;
+                      } else {
+                        log('is color selected $_isSelectedColor');
+                        log('is size selected $_isSelectedSize');
+                        if (_isSelectedColor != null &&
+                            _isSelectedSize != null) {
+                          final strColor= colorToColorName(_isSelectedColor!);
                           log('is color selected $_isSelectedColor');
-                          log('is size selected $_isSelectedSize');
-                          if (_isSelectedColor != null && _isSelectedSize != null) {
-                            _isSelectedColor= colorToHashColorCode(_isSelectedColor!);
-                            log('is color selected $_isSelectedColor');
-                            final response = await Get.find<AddToCartController>()
-                                .addToCart(
-                                    widget.id, _isSelectedColor!, _isSelectedSize!);
-                            if (response) Get.to(() => const CartScreen());
+                          final response = await Get.find<AddToCartController>()
+                              .addToCart(widget.id, strColor,
+                                  _isSelectedSize!, counter);
+                          log(response.toString());
+                          if (response) {
+                            Get.to(() => const CartScreen());
                           } else {
-                            Get.showSnackbar(
-                              GetSnackBar(
-                                message: 'Please Select Color and Size',
-                                duration: const Duration(seconds: 2),
-                              ),
-                            );
+                            Get.offAll(() => const EmailScreen());
                           }
                         }
-                      },
-                      child:  Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                        child: Text('Add to Cart'),
-                      )),
-                );
-              }
-            )
+                      }
+                    },
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      child: Text('Add to Cart'),
+                    )),
+              );
+            })
           ],
         ),
       ),
@@ -166,7 +164,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Padding ProductDetailsBody({required ProductDetails productDetails}) {
-    int counter = 1;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -259,8 +256,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     .map((color) => getColorFromString(color))
                     .toList(),
                 onTap: (isSelectedColor) {
-                  log(isSelectedColor.toString());
-                  _isSelectedColor = isSelectedColor.toString();
+                  _isSelectedColor = isSelectedColor;
                 }),
           const SizedBox(height: 10),
           const Text('Size',
@@ -302,16 +298,46 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Color getColorFromString(String ColorCode) {
-    String codeString = ColorCode.replaceAll("#", "");
-    String code = '0xff$codeString';
-    return Color(int.parse(code));
+
+
+  Color getColorFromString(String color) {
+    color=color.toLowerCase();
+    if(color=='red'){
+      return Colors.red;
+    }
+    if(color=='white'){
+      return Colors.white;
+    }
+    if(color=='green'){
+      return Colors.green;
+    }
+    return Colors.black;
   }
 
-  String colorToHashColorCode(String colorCode) {
-    return colorCode.toString()
-        .replaceAll('0xff', '#')
-        .replaceAll('Color(', '')
-        .replaceAll(')', '');
+  String colorToColorName(Color colorCode) {
+    if(colorCode==Colors.red){
+      return 'Red';
+    }
+    if(colorCode==Colors.white){
+      return 'White';
+    }
+    if(colorCode==Colors.green){
+      return 'Green';
+    }
+    return 'black';
   }
+
+  // Color getColorFromString(String ColorCode) {
+  //   String codeString = ColorCode.replaceAll("#", "");
+  //   String code = '0xff$codeString';
+  //   return Color(int.parse(code));
+  // }
+  //
+  // String colorToHashColorCode(String colorCode) {
+  //   return colorCode
+  //       .toString()
+  //       .replaceAll('0xff', '#')
+  //       .replaceAll('Color(', '')
+  //       .replaceAll(')', '');
+  // }
 }

@@ -64,9 +64,9 @@ class _IndividualCategoriesScreenState
                             ? 2
                             : 3,
                         childAspectRatio:
-                            MediaQuery.of(context).size.width * 0.003,
+                            MediaQuery.of(context).size.width * 0.0028,
                         mainAxisSpacing:
-                            MediaQuery.of(context).size.width * 0.02,
+                            MediaQuery.of(context).size.width * 0.03,
                       ),
                       itemCount:
                           productController.productModel.ProductList?.length ??

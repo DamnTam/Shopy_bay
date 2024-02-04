@@ -27,8 +27,8 @@ AppBar  myAppBar(BuildContext context) {
         ),
       ),
       InkWell(
-        onTap: () {
-          Get.find<AuthController>().clearAuthData();
+        onTap: () async {
+          await AuthController.clearAuthData();
           Get.offAll(() => const EmailScreen());
         },
         child: Padding(

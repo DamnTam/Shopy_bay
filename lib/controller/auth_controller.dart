@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopy_bay/data/models/user_profile.dart';
+import 'package:shopy_bay/presentation/ui/screens/AuthScreen/email_screen.dart';
 
 class AuthController extends GetxController {
   String? _token;
@@ -14,10 +15,10 @@ class AuthController extends GetxController {
 
   UserProfile? get userProfile => _userProfile;
 
-  Future<void> saveUserDetails(String token, UserProfile userProfile) async {
+  Future<void> saveUserDetails(String token, UserModel userModel) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString('token', token);
-    sharedPreferences.setString('userProfile', jsonEncode(userProfile.toJson()));
+    sharedPreferences.setString('userProfile', jsonEncode(userProfile?.toJson()));
     _token = token;
     _userProfile = userProfile;
     log('tokenSaved?: $_token');
@@ -39,14 +40,18 @@ class AuthController extends GetxController {
     _token = await getToken();
     _userProfile = await getUserProfile();
   }
+  bool get isUserLoggedIn => _token != null;
 
   Future<bool> isLoggedIn() async {
     await initialize();
     return _token != null;
   }
 
-  Future<void> clearAuthData() async {
+  static Future<void> clearAuthData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.clear();
+  }
+  static Future<void> goToLogin() async {
+    Get.offAll(() => const EmailScreen());
   }
 }

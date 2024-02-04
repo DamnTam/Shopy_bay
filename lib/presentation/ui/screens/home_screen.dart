@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:shopy_bay/controller/category_list_controller.dart';
 import 'package:shopy_bay/controller/home_carousel_product_controller.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
-import 'package:shopy_bay/data/models/product_list_model.dart';
+import 'package:shopy_bay/data/models/product_model.dart';
 import '../../../controller/main_bottomNavController.dart';
 import '../../../controller/new_product_controller.dart';
 import '../../../controller/special_product_controller.dart';
@@ -121,9 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  SizedBox buildProductCardByRemark({required List<ProductItem> remarkProductList}) {
+  SizedBox buildProductCardByRemark({required List<Product> remarkProductList}) {
     return SizedBox(
-      height: 160,
+      height: 170,
       child:  ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: remarkProductList.length,

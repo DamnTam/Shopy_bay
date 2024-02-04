@@ -16,14 +16,24 @@ class CreateProfileController extends GetxController {
 
   String get errorMessage => _errorMessage;
 
-  Future<bool> createProfile(String firstName, String lastName, String mobile,
-      String city, String shippingAddress) async {
+  Future<bool> createProfile(String firstName, String mobile, String city,
+      String shippingAddress) async {
     Map<String, dynamic> body = {
-      'firstName': firstName,
-      'lastName': lastName,
-      'mobile': mobile,
-      'city': city,
-      'shippingAddress': shippingAddress,
+      "cus_name": firstName,
+      "cus_add": "Shekhertek 8,Mohammadpur, Adabor, Dhaka-1207",
+      "cus_city": city,
+      "cus_state": "Dhaka",
+      "cus_postcode": "1207",
+      "cus_country": "Bangladesh",
+      "cus_phone": mobile,
+      "cus_fax": "01785388919",
+      "ship_name": "Rabbil Hasan",
+      "ship_add": shippingAddress,
+      "ship_city": "Dhaka",
+      "ship_state": "Dhaka",
+      "ship_postcode": "1207",
+      "ship_country": "Bangladesh",
+      "ship_phone": "01785388919"
     };
     _isLoading = true;
     update();
@@ -36,7 +46,7 @@ class CreateProfileController extends GetxController {
     if (response.isSuccess) {
       await Get.find<AuthController>().saveUserDetails(
           Get.find<VerifyOtpController>().token!,
-          UserProfile.fromJson(response.responseData['data']));
+          UserModel.fromJson(response.responseData['data']));
       update();
       return true;
     } else {

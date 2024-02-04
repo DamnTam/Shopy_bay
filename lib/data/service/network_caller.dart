@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart';
+import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/data/models/response_data.dart';
 
 class NetWorkCaller {
@@ -28,7 +29,18 @@ class NetWorkCaller {
           errorMessage: decodedResponse['msg'] ?? 'Something went wrong',
         );
       }
-    } else {
+    }
+    else if(response.statusCode==401){
+      await AuthController.clearAuthData();
+      AuthController.goToLogin();
+      return ResponseData(
+        isSuccess: false,
+        statusCode: response.statusCode,
+        responseData: null,
+        errorMessage: 'Unauthorized',
+      );
+    }
+    else {
       return ResponseData(
         isSuccess: false,
         statusCode: response.statusCode,
@@ -44,10 +56,12 @@ class NetWorkCaller {
       required String token}) async {
     log('url: $url');
     log('body: $body');
-    Response response = await post(Uri.parse(url), body: body, headers: {
+    Response response = await post(Uri.parse(url), body:jsonEncode(body), headers: {
       'token': token.toString(),
-      //'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     });
+    log('response: ${response.body}');
+    log('statusCode: ${response.statusCode}');
     if (response.statusCode == 200) {
       log('statusCode: ${response.statusCode}');
       log('response: ${response.body}');

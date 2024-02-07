@@ -30,10 +30,16 @@ class _ColorSelectorState extends State<ColorSelector> {
         },
         child: Padding(
           padding: const EdgeInsets.only(right: 5),
-          child: CircleAvatar(
-            backgroundColor: color,
-            radius: 12,
-            child: isSelectedColor==color?Icon(Icons.check, color: Colors.white):null,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.black38),
+            ),
+            child: CircleAvatar(
+              backgroundColor: color,
+              radius: 12,
+              child: isSelectedColor==color?Icon(Icons.check, color: Colors.black):null,
+            ),
           ),
         ),
       )).toList(),

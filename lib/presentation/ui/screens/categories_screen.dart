@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
 import 'package:shopy_bay/presentation/ui/utility/app_colors.dart';
 import 'package:shopy_bay/presentation/ui/widgets/home/categories_container.dart';
-
 import '../../../controller/category_list_controller.dart';
 
 class CategoriesScreen extends StatefulWidget {

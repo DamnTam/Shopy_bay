@@ -29,8 +29,7 @@ class NetWorkCaller {
           errorMessage: decodedResponse['msg'] ?? 'Something went wrong',
         );
       }
-    }
-    else if(response.statusCode==401){
+    } else if (response.statusCode == 401) {
       await AuthController.clearAuthData();
       AuthController.goToLogin();
       return ResponseData(
@@ -39,8 +38,7 @@ class NetWorkCaller {
         responseData: null,
         errorMessage: 'Unauthorized',
       );
-    }
-    else {
+    } else {
       return ResponseData(
         isSuccess: false,
         statusCode: response.statusCode,
@@ -56,10 +54,12 @@ class NetWorkCaller {
       required String token}) async {
     log('url: $url');
     log('body: $body');
-    Response response = await post(Uri.parse(url), body:jsonEncode(body), headers: {
-      'token': token.toString(),
-      'Content-Type': 'application/json'
-    });
+    Response response = await post(Uri.parse(url),
+        body: jsonEncode(body),
+        headers: {
+          'token': token.toString(),
+          'Content-Type': 'application/json'
+        });
     log('response: ${response.body}');
     log('statusCode: ${response.statusCode}');
     if (response.statusCode == 200) {
@@ -80,6 +80,15 @@ class NetWorkCaller {
           errorMessage: decodedResponse['msg'] ?? 'Something went wrong',
         );
       }
+    } else if (response.statusCode == 401) {
+      await AuthController.clearAuthData();
+      AuthController.goToLogin();
+      return ResponseData(
+        isSuccess: false,
+        statusCode: response.statusCode,
+        responseData: null,
+        errorMessage: 'Unauthorized',
+      );
     } else {
       return ResponseData(
         isSuccess: false,

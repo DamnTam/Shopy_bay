@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopy_bay/controller/create_wish_list_controller.dart';
+import 'package:shopy_bay/controller/product_wish_list_controller.dart';
 
 import '../../../data/models/product_model.dart';
 import '../screens/product_details_screen.dart';
@@ -42,7 +44,6 @@ class _ProductCardState extends State<ProductCard> {
                 widget.product.image.toString(),
                 width: MediaQuery.of(context).size.width * 0.20,
                 fit: BoxFit.fitWidth,
-
               ),
               const SizedBox(height: 16),
               Expanded(
@@ -108,43 +109,71 @@ class _ProductCardState extends State<ProductCard> {
 
                             //const SizedBox(width: 15),
 
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isFav = !isFav;
-                                });
-                              },
-                              child: Card(
-                                color: AppColors.primaryColor,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: isFav
-                                      ? Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                          size: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.035,
-                                        )
-                                      : Icon(
-                                          Icons.favorite_border,
-                                          color: Colors.white,
-                                          size: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.035,
+                            GetBuilder<CreateWishListController>(
+                                builder: (createWishListController) {
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isFav = !isFav;
+                                    if (isFav) {
+                                      createWishListController.createWishList(
+                                          widget.product.id ?? 0);
+                                      Get.showSnackbar(
+                                        GetSnackBar(
+                                          title: 'Added to wishlist',
+                                          message: 'Product added to wishlist',
+                                          duration: const Duration(seconds: 2),
                                         ),
-                                ),
-                              ),
-                            ),
+                                      );
+                                    } else {
+                                      createWishListController.removeWishList(
+                                          widget.product.id ?? 0);
+                                      Get.showSnackbar(
+                                        GetSnackBar(
+                                          title: 'Removed from wishlist',
+                                          message: 'Product removed from wishlist',
+                                          duration: const Duration(seconds: 2),
+                                        ),
+                                      );
+                                    }
+                                  });
+                                },
+                                child: GetBuilder<ProductWishListController>(
+                                  init: Get.find<ProductWishListController>(),
+                                    builder: (productWishListController) {
+                                      bool isFav = productWishListController.wishListProductIds().contains(widget.product.id);
+                                  return Card(
+                                    color: AppColors.primaryColor,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(3.0),
+                                      child: isFav
+                                          ? Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                              size: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.035,
+                                            )
+                                          : Icon(
+                                              Icons.favorite_border,
+                                              color: Colors.white,
+                                              size: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.035,
+                                            ),
+                                    ),
+                                  );
+                                }),
+                              );
+                            }),
                           ],
                         ),
-                        Spacer(),
                       ],
                     ),
                   ),

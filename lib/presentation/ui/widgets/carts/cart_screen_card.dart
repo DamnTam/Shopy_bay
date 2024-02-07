@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:shopy_bay/controller/cart_controller.dart';
 import 'package:shopy_bay/controller/delete_cart_controller.dart';
 import 'package:shopy_bay/data/models/cart_model.dart';
-
-import '../../../../controller/counter_controller.dart';
 import '../../utility/app_colors.dart';
 
 class CartScreenCard extends StatefulWidget {
   CartScreenCard({
     Key? key, required this.cartItem,
+     this.onTapped,
   }) : super(key: key);
   final CartItem cartItem;
+  final ValueChanged<int>? onTapped;
   //final int counter;
 
   @override
@@ -20,7 +20,13 @@ class CartScreenCard extends StatefulWidget {
 
 class _CartScreenCardState extends State<CartScreenCard> {
   // final CounterController counterController = Get.put(CounterController(),tag: UniqueKey().toString());
-  int counter = 1;
+  late int counter;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    counter = widget.cartItem.qty;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,20 +79,15 @@ class _CartScreenCardState extends State<CartScreenCard> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      GetBuilder<DeleteCartController>(
-                        builder: (deleteController) {
-                          return InkWell(
-                            onTap: ()async{
-                              deleteController.deleteCard(widget.cartItem.product?.id??0);
-                              await Get.find<CartController>().getCart();
-                            },
-                            child: Icon(
-                              Icons.delete_rounded,
-                              color: Colors.red.shade400,
-                              size: cardWidth * 0.07,
-                            ),
-                          );
-                        }
+                      InkWell(
+                        onTap: ()async{
+                          Get.find<CartController>().removeItem(widget.cartItem.product?.id??0);
+                        },
+                        child: Icon(
+                          Icons.delete_rounded,
+                          color: Colors.red.shade400,
+                          size: cardWidth * 0.07,
+                        ),
                       )
                     ],
                   ),
@@ -105,12 +106,13 @@ class _CartScreenCardState extends State<CartScreenCard> {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 7),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${widget.cartItem.price}',
+                        '\$${widget.cartItem.product?.price??0}',
                         style: TextStyle(
                           fontSize: cardWidth * 0.07,
                           color: AppColors.primaryColor,
@@ -124,6 +126,7 @@ class _CartScreenCardState extends State<CartScreenCard> {
                               if(counter>1)
                               counter--;
                               Get.find<CartController>().updateQuantity(widget.cartItem.id??0, counter);
+                              widget.onTapped!(counter);
                               setState(() {
 
                               });
@@ -137,7 +140,7 @@ class _CartScreenCardState extends State<CartScreenCard> {
                           ),
                           SizedBox(width: cardWidth * 0.01),
                           Text(
-                            '${widget.cartItem.qty}',
+                            '${counter}',
                             style: TextStyle(
                               fontSize: cardWidth * 0.05,
                               color: Colors.black,
@@ -149,8 +152,9 @@ class _CartScreenCardState extends State<CartScreenCard> {
                             onTap: () {
                               counter++;
                               Get.find<CartController>().updateQuantity(widget.cartItem.id!, counter);
+                              widget.onTapped!(counter);
                               setState(() {
-                                
+
                               });
                             },
                             child: buildCounterContainer(

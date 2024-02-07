@@ -34,6 +34,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       Get.find<ProductDetailsController>().getProductDetails(widget.id);
     });
   }
+
   int counter = 1;
 
   @override
@@ -44,37 +45,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
       body: GetBuilder<ProductDetailsController>(
           builder: (productDetailsController) {
-        return Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: GetBuilder<ProductDetailsController>(
-                    builder: (productDetailsController) {
-                  return Column(
-                    children: [
-                      ProductDetailsCarousel(onTap: () {}, imageUrls: [
-                        productDetailsController.productDetails.img1 ?? '',
-                        productDetailsController.productDetails.img2 ?? '',
-                        productDetailsController.productDetails.img3 ?? '',
-                        productDetailsController.productDetails.img4 ?? '',
-                      ]),
-                      const SizedBox(height: 10),
-                      Visibility(
+        return Visibility(
+          visible: productDetailsController.isLoading == false,
+          replacement: const Center(child: CircularProgressIndicator()),
+          child: Visibility(
+            visible: productDetailsController.isDataLoaded == true,
+            replacement: const Center(child: Text('No Data Available',style: TextStyle(fontSize: 20),)),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ProductDetailsCarousel(onTap: () {}, imageUrls: [
+                          productDetailsController.productDetails.img1 ?? '',
+                          productDetailsController.productDetails.img2 ?? '',
+                          productDetailsController.productDetails.img3 ?? '',
+                          productDetailsController.productDetails.img4 ?? '',
+                        ]),
+                        const SizedBox(height: 10),
+                        Visibility(
                           visible: productDetailsController.isLoading == false,
-                          replacement:
-                              const Center(child: LinearProgressIndicator()),
+                          replacement: const Center(
+                            child: LinearProgressIndicator(),
+                          ),
                           child: ProductDetailsBody(
-                            productDetails:
-                                productDetailsController.productDetails,
-                          )),
-                    ],
-                  );
-                }),
-              ),
+                            productDetails: productDetailsController.productDetails,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                buildCheckoutContainer(
+                    productDetails: productDetailsController.productDetails)
+              ],
             ),
-            buildCheckoutContainer(
-                productDetails: productDetailsController.productDetails)
-          ],
+          ),
         );
       }),
     );
@@ -136,15 +143,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         log('is size selected $_isSelectedSize');
                         if (_isSelectedColor != null &&
                             _isSelectedSize != null) {
-                          final strColor= colorToColorName(_isSelectedColor!);
+                          final strColor = colorToColorName(_isSelectedColor!);
                           log('is color selected $_isSelectedColor');
                           final response = await Get.find<AddToCartController>()
-                              .addToCart(widget.id, strColor,
-                                  _isSelectedSize!, counter);
+                              .addToCart(widget.id, strColor, _isSelectedSize!,
+                                  counter);
                           log(response.toString());
                           if (response) {
-                            Get.to(() => const CartScreen());
+                            Get.showSnackbar(GetSnackBar(
+                              message: 'Added cart!!',
+                              title: 'Cart added!!',
+                              duration: const Duration(seconds: 2),
+                            ));
+                             Get.to(() => CartScreen(id:widget.id,strColor: strColor,selectedSize: _isSelectedSize,cnt:counter));
                           } else {
+                            Get.showSnackbar(GetSnackBar(
+                              message:
+                                  Get.find<AddToCartController>().errorMessage,
+                              duration: const Duration(seconds: 2),
+                            ));
                             Get.offAll(() => const EmailScreen());
                           }
                         }
@@ -298,46 +315,44 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-
-
   Color getColorFromString(String color) {
-    color=color.toLowerCase();
-    if(color=='red'){
+    color = color.toLowerCase();
+    if (color == 'red') {
       return Colors.red;
     }
-    if(color=='white'){
+    if (color == 'white') {
       return Colors.white;
     }
-    if(color=='green'){
+    if (color == 'green') {
       return Colors.green;
     }
     return Colors.black;
   }
 
   String colorToColorName(Color colorCode) {
-    if(colorCode==Colors.red){
+    if (colorCode == Colors.red) {
       return 'Red';
     }
-    if(colorCode==Colors.white){
+    if (colorCode == Colors.white) {
       return 'White';
     }
-    if(colorCode==Colors.green){
+    if (colorCode == Colors.green) {
       return 'Green';
     }
     return 'black';
   }
 
-  // Color getColorFromString(String ColorCode) {
-  //   String codeString = ColorCode.replaceAll("#", "");
-  //   String code = '0xff$codeString';
-  //   return Color(int.parse(code));
-  // }
-  //
-  // String colorToHashColorCode(String colorCode) {
-  //   return colorCode
-  //       .toString()
-  //       .replaceAll('0xff', '#')
-  //       .replaceAll('Color(', '')
-  //       .replaceAll(')', '');
-  // }
+// Color getColorFromString(String ColorCode) {
+//   String codeString = ColorCode.replaceAll("#", "");
+//   String code = '0xff$codeString';
+//   return Color(int.parse(code));
+// }
+//
+// String colorToHashColorCode(String colorCode) {
+//   return colorCode
+//       .toString()
+//       .replaceAll('0xff', '#')
+//       .replaceAll('Color(', '')
+//       .replaceAll(')', '');
+// }
 }

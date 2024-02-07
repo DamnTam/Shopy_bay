@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/presentation/ui/screens/create_review_screen.dart';
-
 import '../utility/app_colors.dart';
 
 class ReviewScreen extends StatefulWidget {
@@ -36,7 +35,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 },
               ),
             ),
-            buildCheckoutContainer()
+           // buildCheckoutContainer()
           ],
         ));
   }

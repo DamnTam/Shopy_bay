@@ -15,7 +15,6 @@ class AddToCartController extends GetxController {
   String get errorMessage => _errorMessage;
 
   Future<bool> addToCart(int productId,String color,String size,int quantity) async {
-    log(color);
     Map<String, dynamic> body = {
       "product_id": productId,
       "color":color,
@@ -34,14 +33,15 @@ class AddToCartController extends GetxController {
       if (response.isSuccess) {
         update();
         return true;
-      } else {
-        _errorMessage = 'Cart Addition Failed';
+      }
+      else {
+        _errorMessage = response.errorMessage;
         update();
         return false;
       }
     }
     catch(e){
-      _errorMessage = 'Cart Addition Failed';
+      _errorMessage = e.toString();
       update();
       return false;
     }

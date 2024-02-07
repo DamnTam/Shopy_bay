@@ -30,11 +30,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Get.find<HomeCarouselProductController>().getHomeCarouselProduct();
-    Get.find<CategotyListController>().getCategoryList();
-    Get.find<PopularProductController>().getPopularProduct();
-    Get.find<SpecialProductController>().getSpecialProduct();
-    Get.find<NewProductController>().getNewProduct();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<HomeCarouselProductController>().getHomeCarouselProduct();
+      Get.find<CategotyListController>().getCategoryList();
+      Get.find<PopularProductController>().getPopularProduct();
+      Get.find<SpecialProductController>().getSpecialProduct();
+      Get.find<NewProductController>().getNewProduct();
+    });
 
 
   }
@@ -42,13 +44,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: GetBuilder<MainBottomNavController>(
-        builder:(controller){
+        builder:(mainBottomNavcontroller){
           return  Scaffold(
-            body: _screens[controller.currentIndex],
+            body: _screens[mainBottomNavcontroller.currentIndex],
             bottomNavigationBar: BottomNavigationBar(
               elevation: 5,
-              onTap: (index) =>controller.changeIndex(index),
-              currentIndex: controller.currentIndex,
+              onTap: (index) =>mainBottomNavcontroller.changeIndex(index),
+              currentIndex: mainBottomNavcontroller.currentIndex,
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),

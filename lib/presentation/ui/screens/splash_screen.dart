@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void moveToNextScreen() async {
     await Get.find<AuthController>().initialize();
-    await Future.delayed(const Duration(seconds: 2))
+    await Future.delayed(const Duration(seconds: 4))
         .then((value) => Get.offAll(() => const BottomNavScreen()));
   }
 

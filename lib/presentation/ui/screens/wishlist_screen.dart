@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
+import 'package:shopy_bay/controller/product_wish_list_controller.dart';
 import 'package:shopy_bay/presentation/ui/utility/app_colors.dart';
-
-import '../widgets/product_card.dart';
+import 'package:shopy_bay/presentation/ui/widgets/wishlist/wish_list_product_card.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({super.key});
@@ -13,6 +13,14 @@ class WishlistScreen extends StatefulWidget {
 }
 
 class _WishlistScreenState extends State<WishlistScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<ProductWishListController>().getWishListProduct();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return  PopScope(
@@ -39,19 +47,29 @@ class _WishlistScreenState extends State<WishlistScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width * 0.02),
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: MediaQuery.of(context).orientation ==
-                              Orientation.portrait
-                          ? 2
-                          : 3,
-                      childAspectRatio: MediaQuery.of(context).size.width * 0.003,
-                      mainAxisSpacing: MediaQuery.of(context).size.width * 0.02,
-                    ),
-                    itemCount: 18,
-                    itemBuilder: (context, index) {
-                      return Scaffold();
-                    },
+                  child: GetBuilder<ProductWishListController>(
+                    builder: (productWishListController) {
+                      return Visibility(
+                        visible: productWishListController.isLoading==false,
+                        replacement: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        child: GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: MediaQuery.of(context).orientation ==
+                                    Orientation.portrait
+                                ? 2
+                                : 3,
+                            childAspectRatio: MediaQuery.of(context).size.width * 0.0027,
+                            mainAxisSpacing: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          itemCount: productWishListController.wishListModel.data?.length??0,
+                          itemBuilder: (context, index) {
+                            return WishListProductCard(product:productWishListController.wishListModel.data![index].product!);
+                          },
+                        ),
+                      );
+                    }
                   ),
                 ),
               ),

@@ -2,13 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shopy_bay/data/models/home_carousel_product_model.dart';
 
-
 import '../../utility/app_colors.dart';
 
 class CustomCarousel extends StatefulWidget {
   const CustomCarousel({
     super.key,
-    required this.onTap, required this.homeCarouselProductList,
+    required this.onTap,
+    required this.homeCarouselProductList,
   });
 
   final VoidCallback onTap;
@@ -20,60 +20,59 @@ class CustomCarousel extends StatefulWidget {
 
 class _CustomCarouselState extends State<CustomCarousel> {
   final ValueNotifier<int> _index = ValueNotifier<int>(0);
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-     final height= MediaQuery.of(context).size.height;
+    final height = MediaQuery.of(context).size.height;
     return Column(
       children: [
         CarouselSlider(
           items: widget.homeCarouselProductList
               .map(
                 (product) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image.network(
-                       product.image.toString(),
-                        width: width * 0.40,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                           Wrap(
+                    margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Stack(
+                      children: [
+                        Image.network(
+                          product.image??'',
+                          height: height * 0.3,
+                          fit: BoxFit.fitHeight,
+                        ),
+                        Positioned(
+                          top: 50,
+                          bottom: 0,
+                          left: 15,
+                          right: 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 product.title.toString(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: width * 0.055,
-                                    fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.5,
+                                child: Text(
+                                  product.shortDes.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          ElevatedButton(
-                            onPressed: widget.onTap,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: AppColors.primaryColor,
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12),
-                              child: Text('Shop Now'),
-                            ),
-                          ),
-                         // SizedBox(height: 100)
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                        ),
+                      ],
+                    )),
               )
               .toList(),
           options: CarouselOptions(
@@ -90,7 +89,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (int i = 0; i <widget.homeCarouselProductList.length; i++)
+                for (int i = 0; i < widget.homeCarouselProductList.length; i++)
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: .9),
                     alignment: Alignment.center,

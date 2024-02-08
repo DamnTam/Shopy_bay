@@ -4,10 +4,10 @@ import 'package:shopy_bay/controller/category_list_controller.dart';
 import 'package:shopy_bay/controller/home_carousel_product_controller.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
-import 'package:shopy_bay/presentation/ui/screens/wishlist_screen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/wishlist_screen.dart';
 
-import '../../../controller/new_product_controller.dart';
-import '../../../controller/special_product_controller.dart';
+import '../../../../controller/new_product_controller.dart';
+import '../../../../controller/special_product_controller.dart';
 import 'cart_screen.dart';
 import 'categories_screen.dart';
 import 'home_screen.dart';

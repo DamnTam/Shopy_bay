@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/product_controller.dart';
-import '../utility/app_colors.dart';
-import '../widgets/product_card.dart';
+import '../../utility/app_colors.dart';
+import '../../widgets/home/product_card.dart';
 
 class IndividualCategoriesScreen extends StatefulWidget {
   const IndividualCategoriesScreen(

@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:shopy_bay/controller/add_to_cart_controller.dart';
 import 'package:shopy_bay/controller/cart_controller.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
-import '../utility/app_colors.dart';
-import '../widgets/carts/cart_screen_card.dart';
+import '../../utility/app_colors.dart';
+import '../../widgets/carts/cart_screen_card.dart';
 import 'checkout_screen.dart';
 
 class CartScreen extends StatefulWidget {

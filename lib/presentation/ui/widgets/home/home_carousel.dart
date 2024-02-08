@@ -4,8 +4,8 @@ import 'package:shopy_bay/data/models/home_carousel_product_model.dart';
 
 import '../../utility/app_colors.dart';
 
-class CustomCarousel extends StatefulWidget {
-  const CustomCarousel({
+class HomeCarousel extends StatefulWidget {
+  const HomeCarousel({
     super.key,
     required this.onTap,
     required this.homeCarouselProductList,
@@ -15,10 +15,10 @@ class CustomCarousel extends StatefulWidget {
   final List<HomeCarouselProduct> homeCarouselProductList;
 
   @override
-  State<CustomCarousel> createState() => _CustomCarouselState();
+  State<HomeCarousel> createState() => _HomeCarouselState();
 }
 
-class _CustomCarouselState extends State<CustomCarousel> {
+class _HomeCarouselState extends State<HomeCarousel> {
   final ValueNotifier<int> _index = ValueNotifier<int>(0);
 
   @override

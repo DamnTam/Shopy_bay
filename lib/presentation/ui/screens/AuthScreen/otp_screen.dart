@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shopy_bay/controller/verify_otp_controller.dart';
 import 'package:shopy_bay/presentation/ui/screens/AuthScreen/create_profile_screen.dart';
-import 'package:shopy_bay/presentation/ui/screens/bottom_navScreen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/bottom_navScreen.dart';
 import 'package:shopy_bay/presentation/ui/utility/assets_path.dart';
 import '../../../../controller/sentEmailOtpController.dart';
 import '../../utility/app_colors.dart';
-import '../../widgets/PinCodeTextField.dart';
-import '../../widgets/shopybay_text.dart';
+import '../../widgets/Auth/PinCodeTextField.dart';
+import '../../widgets/home/shopybay_text.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key, required this.email});

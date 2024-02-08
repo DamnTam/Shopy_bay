@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shopy_bay/presentation/ui/screens/bottom_navScreen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/bottom_navScreen.dart';
 import 'package:shopy_bay/presentation/ui/utility/app_colors.dart';
 import 'package:shopy_bay/presentation/ui/utility/assets_path.dart';
 import 'package:get/get.dart';
-import 'package:shopy_bay/presentation/ui/widgets/shopybay_text.dart';
+import 'package:shopy_bay/presentation/ui/widgets/home/shopybay_text.dart';
 
 import '../../../controller/auth_controller.dart';
 

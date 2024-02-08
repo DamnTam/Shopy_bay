@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:shopy_bay/controller/create_wish_list_controller.dart';
 import 'package:shopy_bay/controller/product_wish_list_controller.dart';
 
-import '../../../data/models/product_model.dart';
-import '../screens/product_details_screen.dart';
-import '../utility/app_colors.dart';
+import '../../../../data/models/product_model.dart';
+import '../../screens/ShopScreen/product_details_screen.dart';
+import '../../utility/app_colors.dart';
 
 class ProductCard extends StatefulWidget {
   const ProductCard({

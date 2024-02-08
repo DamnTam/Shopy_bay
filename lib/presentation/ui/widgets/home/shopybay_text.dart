@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utility/app_colors.dart';
+import '../../utility/app_colors.dart';
 
 RichText shopyBayText(BuildContext context, {double fontSize = 28}) {
   return RichText(

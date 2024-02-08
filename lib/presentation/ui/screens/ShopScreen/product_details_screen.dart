@@ -5,13 +5,13 @@ import 'package:shopy_bay/controller/add_to_cart_controller.dart';
 import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/data/models/product_details_model.dart';
 import 'package:shopy_bay/presentation/ui/screens/AuthScreen/email_screen.dart';
-import 'package:shopy_bay/presentation/ui/screens/cart_screen.dart';
-import 'package:shopy_bay/presentation/ui/screens/review_screen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/cart_screen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/review_screen.dart';
 import 'package:shopy_bay/presentation/ui/widgets/product_details/products_details_carousel.dart';
-import '../../../controller/product_details_controller.dart';
-import '../utility/app_colors.dart';
-import '../widgets/product_details/color_selector.dart';
-import '../widgets/product_details/size_selector.dart';
+import '../../../../controller/product_details_controller.dart';
+import '../../utility/app_colors.dart';
+import '../../widgets/product_details/color_selector.dart';
+import '../../widgets/product_details/size_selector.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key, required this.id});

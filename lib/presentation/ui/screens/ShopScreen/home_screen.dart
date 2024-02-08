@@ -4,15 +4,15 @@ import 'package:shopy_bay/controller/category_list_controller.dart';
 import 'package:shopy_bay/controller/home_carousel_product_controller.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
 import 'package:shopy_bay/data/models/product_model.dart';
-import '../../../controller/main_bottomNavController.dart';
-import '../../../controller/new_product_controller.dart';
-import '../../../controller/special_product_controller.dart';
-import '../widgets/home/categories_container.dart';
-import '../widgets/home/section_title.dart';
-import '../widgets/home/custom_carousel.dart';
-import '../widgets/home/my_appbar.dart';
-import '../widgets/home/search_inputdecoration.dart';
-import '../widgets/product_card.dart';
+import '../../../../controller/main_bottomNavController.dart';
+import '../../../../controller/new_product_controller.dart';
+import '../../../../controller/special_product_controller.dart';
+import '../../widgets/home/categories_container.dart';
+import '../../widgets/home/section_title.dart';
+import '../../widgets/home/home_carousel.dart';
+import '../../widgets/home/my_appbar.dart';
+import '../../widgets/home/search_inputdecoration.dart';
+import '../../widgets/home/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     visible: homeCarouselProductController.isLoading == false,
                     replacement:
                         const Center(child: CircularProgressIndicator()),
-                    child: CustomCarousel(
+                    child: HomeCarousel(
                       homeCarouselProductList: homeCarouselProductController
                               .homeCarouselProductModel
                               .homeCarouselProductList ??

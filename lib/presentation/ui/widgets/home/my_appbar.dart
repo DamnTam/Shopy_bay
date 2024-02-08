@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/presentation/ui/screens/AuthScreen/email_screen.dart';
-import 'package:shopy_bay/presentation/ui/widgets/shopybay_text.dart';
+import 'package:shopy_bay/presentation/ui/widgets/home/shopybay_text.dart';
 import '../../screens/AuthScreen/create_profile_screen.dart';
 
 AppBar  myAppBar(BuildContext context) {

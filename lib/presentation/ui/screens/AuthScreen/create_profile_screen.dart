@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shopy_bay/controller/create_profile_controller.dart';
-import 'package:shopy_bay/presentation/ui/screens/bottom_navScreen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/bottom_navScreen.dart';
 import 'package:shopy_bay/presentation/ui/utility/assets_path.dart';
-import 'package:shopy_bay/presentation/ui/widgets/shopybay_text.dart';
+import 'package:shopy_bay/presentation/ui/widgets/home/shopybay_text.dart';
 import '../../utility/app_colors.dart';
 
 

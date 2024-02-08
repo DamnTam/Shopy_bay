@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/invoice_create_controller.dart';
-import 'package:shopy_bay/presentation/ui/screens/billing_screen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/billing_screen.dart';
 
-import '../utility/app_colors.dart';
+import '../../utility/app_colors.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});

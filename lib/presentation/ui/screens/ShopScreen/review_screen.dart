@@ -35,7 +35,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 },
               ),
             ),
-           // buildCheckoutContainer()
+           buildReviewContainer(),
           ],
         ));
   }
@@ -76,7 +76,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   );
   }
 
-  Container buildCheckoutContainer() {
+  Container buildReviewContainer() {
     return Container(
       height: 85,
       decoration: BoxDecoration(

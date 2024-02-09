@@ -39,13 +39,8 @@ class CartController extends GetxController {
     }
   }
 
-  void updatePrice(int id, RxDouble totalPrice) {
-    _cartModel.cartList?.firstWhere((element) => element.id == id).price =
-        totalPrice.toString();
-    _totalAmount.value = calculateTotalPrice();
-
-  }
   void updateQuantity(int id, int quantity) {
+    log('id: $id, qty: $quantity');
     _cartModel.cartList?.firstWhere((element) => element.id == id).qty =
         quantity;
     _totalAmount.value = calculateTotalPrice();

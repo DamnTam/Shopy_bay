@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   SizedBox buildProductCardByRemark({required List<Product> remarkProductList}) {
     return SizedBox(
-      height: 170,
+      height: 180,
       child:  ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: remarkProductList.length,

@@ -54,19 +54,25 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         replacement: Center(
                           child: CircularProgressIndicator(),
                         ),
-                        child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: MediaQuery.of(context).orientation ==
-                                    Orientation.portrait
-                                ? 2
-                                : 3,
-                            childAspectRatio: MediaQuery.of(context).size.width * 0.0027,
-                            mainAxisSpacing: MediaQuery.of(context).size.width * 0.02,
+                        child: Visibility(
+                          visible: productWishListController.wishListModel.data?.isNotEmpty??false,
+                          replacement: Center(
+                            child: Text('No Product in Wishlist'),
                           ),
-                          itemCount: productWishListController.wishListModel.data?.length??0,
-                          itemBuilder: (context, index) {
-                            return WishListProductCard(product:productWishListController.wishListModel.data![index].product!);
-                          },
+                          child: GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: MediaQuery.of(context).orientation ==
+                                      Orientation.portrait
+                                  ? 2
+                                  : 3,
+                              childAspectRatio: MediaQuery.of(context).size.width * 0.0027,
+                              mainAxisSpacing: MediaQuery.of(context).size.width * 0.02,
+                            ),
+                            itemCount: productWishListController.wishListModel.data?.length??0,
+                            itemBuilder: (context, index) {
+                              return WishListProductCard(product:productWishListController.wishListModel.data![index].product!);
+                            },
+                          ),
                         ),
                       );
                     }

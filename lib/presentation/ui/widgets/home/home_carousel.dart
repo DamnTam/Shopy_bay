@@ -53,8 +53,8 @@ class _HomeCarouselState extends State<HomeCarousel> {
                             children: [
                               Text(
                                 product.title.toString(),
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style:  TextStyle(
+                                  fontSize: width * 0.05,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -62,8 +62,8 @@ class _HomeCarouselState extends State<HomeCarousel> {
                                 width: width * 0.5,
                                 child: Text(
                                   product.shortDes.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                                  style:  TextStyle(
+                                    fontSize: width * 0.035,
                                     color: Colors.grey,
                                   ),
                                 ),

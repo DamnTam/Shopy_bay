@@ -40,10 +40,12 @@ class _ProductCardState extends State<ProductCard> {
           child: Column(
             children: [
               const SizedBox(height: 10),
-              Image.network(
-                widget.product.image.toString(),
-                width: MediaQuery.of(context).size.width * 0.20,
-                fit: BoxFit.fitWidth,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.network(
+                  widget.product.image ?? '',
+                  width: MediaQuery.of(context).size.width * 0.20,
+                ),
               ),
               const SizedBox(height: 16),
               Expanded(

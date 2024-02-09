@@ -30,7 +30,7 @@ class _CartScreenCardState extends State<CartScreenCard> {
 
   @override
   Widget build(BuildContext context) {
-    double cardWidth = MediaQuery.of(context).size.width * 0.8;
+    double cardWidth = MediaQuery.of(context).size.width;
     // double cardHeight = MediaQuery.of(context).size.height * 0.16;
     return Card(
       color: Colors.white,
@@ -51,13 +51,21 @@ class _CartScreenCardState extends State<CartScreenCard> {
                 ),
               ),
             ),
-            width: cardWidth * 0.35,
-            height: cardWidth * 0.45,
+            width: cardWidth * 0.30,
+            height: cardWidth * 0.35,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.network(
-                widget.cartItem.product?.image??''
-              )
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  image: DecorationImage(
+                    image: NetworkImage(widget.cartItem.product?.image??''),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+
+              ),
             ),
           ),
           Expanded(
@@ -75,7 +83,7 @@ class _CartScreenCardState extends State<CartScreenCard> {
                       Text(
                         widget.cartItem.product?.title??'Product Title',
                         style: TextStyle(
-                          fontSize: cardWidth * 0.055,
+                          fontSize: cardWidth * 0.038,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -114,7 +122,7 @@ class _CartScreenCardState extends State<CartScreenCard> {
                       Text(
                         '\$${widget.cartItem.product?.price??0}',
                         style: TextStyle(
-                          fontSize: cardWidth * 0.07,
+                          fontSize: cardWidth * 0.06,
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.w600,
                         ),

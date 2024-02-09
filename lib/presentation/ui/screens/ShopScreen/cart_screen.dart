@@ -74,11 +74,9 @@ class _CartScreenState extends State<CartScreen> {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: CartScreenCard(
-                                cartItem:
-                                    cartController.cartModel.cartList![index],
+                                cartItem: cartController.cartModel.cartList![index],
                                 onTapped: (int counter) {
                                   setState(() {
-                                    log('Tapcounter: $counter');
                                     counterr = counter;
                                   });
                                 },

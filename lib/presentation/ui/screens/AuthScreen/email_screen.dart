@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shopy_bay/controller/sentEmailOtpController.dart';
 import 'package:shopy_bay/presentation/ui/utility/assets_path.dart';
-import '../../widgets/shopybay_text.dart';
+import '../../widgets/home/shopybay_text.dart';
 import 'otp_screen.dart';
 
 class EmailScreen extends StatefulWidget {

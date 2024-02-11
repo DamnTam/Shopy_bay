@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shopy_bay/controller/product_details_controller.dart';
-import 'package:shopy_bay/data/models/product_details_model.dart';
 import '../../utility/app_colors.dart';
 import 'package:get/get.dart';
 
@@ -32,33 +31,21 @@ class _ProductDetailsCarouselState extends State<ProductDetailsCarousel> {
           CarouselSlider(
             items: widget.imageUrls
                 .map(
-                  (urls) => Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: GetBuilder<ProductDetailsController>(
-                      builder: (productDetailsController) {
-                        return Visibility(
-                          visible: productDetailsController.isLoading==false,
-                          replacement: const Center(child: CircularProgressIndicator()),
-                          child: Center(
-                            child: Image.network(
-                              urls,
-                              fit: BoxFit.cover,
-                              width: width * 0.45,
-                            )
-                          ),
-                        );
-                      }
-                    ),
+                  (urls) => GetBuilder<ProductDetailsController>(
+                    builder: (productDetailsController) {
+                      return Visibility(
+                        visible: productDetailsController.isLoading==false,
+                        replacement: const Center(child: CircularProgressIndicator()),
+                        child: Image.network(
+                          urls,
+                        ),
+                      );
+                    }
                   ),
-                )
-                .toList(),
+                ).toList(),
             options: CarouselOptions(
-                viewportFraction: 1.2,
-                height: width * 0.55,
+                viewportFraction: 1,
+                height: width * 0.66,
                 onPageChanged: (index, reason) {
                   _index.value = index;
                 }),

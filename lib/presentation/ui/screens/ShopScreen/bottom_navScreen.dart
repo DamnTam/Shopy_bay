@@ -4,10 +4,10 @@ import 'package:shopy_bay/controller/category_list_controller.dart';
 import 'package:shopy_bay/controller/home_carousel_product_controller.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
-import 'package:shopy_bay/presentation/ui/screens/wishlist_screen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/wishlist_screen.dart';
 
-import '../../../controller/new_product_controller.dart';
-import '../../../controller/special_product_controller.dart';
+import '../../../../controller/new_product_controller.dart';
+import '../../../../controller/special_product_controller.dart';
 import 'cart_screen.dart';
 import 'categories_screen.dart';
 import 'home_screen.dart';
@@ -30,11 +30,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Get.find<HomeCarouselProductController>().getHomeCarouselProduct();
-    Get.find<CategotyListController>().getCategoryList();
-    Get.find<PopularProductController>().getPopularProduct();
-    Get.find<SpecialProductController>().getSpecialProduct();
-    Get.find<NewProductController>().getNewProduct();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<HomeCarouselProductController>().getHomeCarouselProduct();
+      Get.find<CategotyListController>().getCategoryList();
+      Get.find<PopularProductController>().getPopularProduct();
+      Get.find<SpecialProductController>().getSpecialProduct();
+      Get.find<NewProductController>().getNewProduct();
+    });
 
 
   }
@@ -42,13 +44,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: GetBuilder<MainBottomNavController>(
-        builder:(controller){
+        builder:(mainBottomNavcontroller){
           return  Scaffold(
-            body: _screens[controller.currentIndex],
+            body: _screens[mainBottomNavcontroller.currentIndex],
             bottomNavigationBar: BottomNavigationBar(
               elevation: 5,
-              onTap: (index) =>controller.changeIndex(index),
-              currentIndex: controller.currentIndex,
+              onTap: (index) =>mainBottomNavcontroller.changeIndex(index),
+              currentIndex: mainBottomNavcontroller.currentIndex,
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),

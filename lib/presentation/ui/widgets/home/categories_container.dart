@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/data/models/category_list_model.dart';
 
-import '../../screens/individual_categories_screen.dart';
+import '../../screens/ShopScreen/individual_categories_screen.dart';
 import '../../utility/app_colors.dart';
 
 class CategoriesContainer extends StatefulWidget {

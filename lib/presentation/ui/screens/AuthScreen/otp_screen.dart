@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shopy_bay/controller/verify_otp_controller.dart';
 import 'package:shopy_bay/presentation/ui/screens/AuthScreen/create_profile_screen.dart';
-import 'package:shopy_bay/presentation/ui/screens/bottom_navScreen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/bottom_navScreen.dart';
 import 'package:shopy_bay/presentation/ui/utility/assets_path.dart';
 import '../../../../controller/sentEmailOtpController.dart';
 import '../../utility/app_colors.dart';
-import '../../widgets/PinCodeTextField.dart';
-import '../../widgets/shopybay_text.dart';
+import '../../widgets/Auth/PinCodeTextField.dart';
+import '../../widgets/home/shopybay_text.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key, required this.email});
@@ -50,119 +50,123 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   void dispose() {
     super.dispose();
-    // _otpController.dispose();
+    _otpController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            children: [
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Lottie.asset(
-                  AssetsPath.applogo,
-                  width: 100,
+        body: SingleChildScrollView(
+          reverse: true,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 120),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Lottie.asset(
+                    AssetsPath.applogo,
+                    width: 100,
+                  ),
                 ),
-              ),
-              shopyBayText(context),
-              const SizedBox(height: 20),
-              Text(
-                'Enter OTP Code',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleLarge,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'A 4 digit otp has been sent to your email address',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleSmall,
-              ),
-              const SizedBox(height: 25),
+                shopyBayText(context),
+                const SizedBox(height: 20),
+                Text(
+                  'Enter OTP Code',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleLarge,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'A 6 digit otp has been sent to your email address',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleSmall,
+                ),
+                const SizedBox(height: 25),
 
-              /// This is the PinCodeTextField widget from the pin_code_fields package
-              buildPinCodeTextField(context, _otpController),
+                /// This is the PinCodeTextField widget from the pin_code_fields package
+                buildPinCodeTextField(context, _otpController),
 
-              const SizedBox(
-                height: 20,
-              ),
+                const SizedBox(
+                  height: 20,
+                ),
 
-              GetBuilder<VerifyOtpController>(
-                builder: (verifyOtpController) {
-                  return Visibility(
-                    visible: verifyOtpController.isLoading == false,
-                    replacement: const CircularProgressIndicator(
-                      color: AppColors.primaryColor,
-                    ),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () => verifyOtpPressed(verifyOtpController),
-                          child: const Text('Verify'),
-                    ),
-                  ),);
-                },
-              ),
-              const SizedBox(height: 30),
-              RichText(
-                text: TextSpan(
-                  text: _countDown
-                      ? 'The code will expire in '
-                      : 'The code has expired',
-                  style: const TextStyle(color: Colors.grey, fontSize: 15),
-                  children: [
-                    TextSpan(
-                      text: _countDown ? '${secondsRemaining}s' : '',
-                      style: const TextStyle(
+                GetBuilder<VerifyOtpController>(
+                  builder: (verifyOtpController) {
+                    return Visibility(
+                      visible: verifyOtpController.isLoading == false,
+                      replacement: const CircularProgressIndicator(
                         color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  ],
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            onPressed: () => verifyOtpPressed(verifyOtpController),
+                            child: const Text('Verify'),
+                      ),
+                    ),);
+                  },
                 ),
-              ),
-              const SizedBox(height: 15),
+                const SizedBox(height: 30),
+                RichText(
+                  text: TextSpan(
+                    text: _countDown
+                        ? 'The code will expire in '
+                        : 'The code has expired',
+                    style: const TextStyle(color: Colors.grey, fontSize: 15),
+                    children: [
+                      TextSpan(
+                        text: _countDown ? '${secondsRemaining}s' : '',
+                        style: const TextStyle(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 15),
 
-              ///there is condition to check if the countdown is true or false
-              _countDown
-                  ? const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Text(
-                  'Resend Code',
-                  style: TextStyle(color: Colors.grey),
+                ///there is condition to check if the countdown is true or false
+                _countDown
+                    ? const Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Text(
+                    'Resend Code',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                )
+                    : TextButton(
+                  onPressed: () {
+                    _countDown = true;
+                    secondsRemaining = 120;
+                    startTimer();
+                    _otpController.clear();
+                    sentEmailOtpController.sentEmailOtp(widget.email);
+                    setState(() {});
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.primaryColor,
+                  ),
+                  child: const Text('Resend Code'),
                 ),
-              )
-                  : TextButton(
-                onPressed: () {
-                  _countDown = true;
-                  secondsRemaining = 120;
-                  startTimer();
-                  _otpController.clear();
-                  sentEmailOtpController.sentEmailOtp(widget.email);
-                  setState(() {});
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.primaryColor,
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery
+                          .of(context)
+                          .viewInsets
+                          .bottom),
                 ),
-                child: const Text('Resend Code'),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom),
-              ),
-              Spacer(),
-            ],
+              ],
+            ),
           ),
         ));
   }

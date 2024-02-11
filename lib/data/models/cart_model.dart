@@ -1,17 +1,17 @@
 import 'package:shopy_bay/data/models/product_model.dart';
 
-class ProductDetailsModel {
+class CartModel {
   String? msg;
-  List<ProductDetails>? productdetailsList;
+  List<CartItem>? cartList;
 
-  ProductDetailsModel({this.msg, this.productdetailsList});
+  CartModel({this.msg, this.cartList});
 
-  ProductDetailsModel.fromJson(Map<String, dynamic> json) {
+  CartModel.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     if (json['data'] != null) {
-      productdetailsList = <ProductDetails>[];
+      cartList = <CartItem>[];
       json['data'].forEach((v) {
-        productdetailsList!.add(new ProductDetails.fromJson(v));
+        cartList!.add(new CartItem.fromJson(v));
       });
     }
   }
@@ -19,51 +19,44 @@ class ProductDetailsModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['msg'] = this.msg;
-    if (this.productdetailsList != null) {
-      data['data'] = this.productdetailsList!.map((v) => v.toJson()).toList();
+    if (this.cartList != null) {
+      data['data'] = this.cartList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class ProductDetails {
+class CartItem {
   int? id;
-  String? img1;
-  String? img2;
-  String? img3;
-  String? img4;
-  String? des;
+  int? userId;
+  int? productId;
   String? color;
   String? size;
-  int? productId;
+  int qty=1;
+  String? price;
   String? createdAt;
   String? updatedAt;
   Product? product;
 
-  ProductDetails(
+  CartItem(
       {this.id,
-        this.img1,
-        this.img2,
-        this.img3,
-        this.img4,
-        this.des,
+        this.userId,
+        this.productId,
         this.color,
         this.size,
-        this.productId,
+        this.price,
         this.createdAt,
         this.updatedAt,
         this.product});
 
-  ProductDetails.fromJson(Map<String, dynamic> json) {
+  CartItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    img1 = json['img1'];
-    img2 = json['img2'];
-    img3 = json['img3'];
-    img4 = json['img4'];
-    des = json['des'];
+    userId = json['user_id'];
+    productId = json['product_id'];
     color = json['color'];
     size = json['size'];
-    productId = json['product_id'];
+    qty = int.tryParse(json['qty'])??1;
+    price = json['price'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     product =
@@ -73,14 +66,12 @@ class ProductDetails {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['img1'] = this.img1;
-    data['img2'] = this.img2;
-    data['img3'] = this.img3;
-    data['img4'] = this.img4;
-    data['des'] = this.des;
+    data['user_id'] = this.userId;
+    data['product_id'] = this.productId;
     data['color'] = this.color;
     data['size'] = this.size;
-    data['product_id'] = this.productId;
+    data['qty'] = this.qty;
+    data['price'] = this.price;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     if (this.product != null) {

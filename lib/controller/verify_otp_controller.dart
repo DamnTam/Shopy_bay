@@ -27,7 +27,7 @@ class VerifyOtpController extends GetxController{
       });
       final responseProfile = await Get.find<ReadProfileController>().ReadProfile(token!);
       if(responseProfile){
-        await Get.find<AuthController>().saveUserDetails(token!, Get.find<ReadProfileController>().userProfile);
+        await Get.find<AuthController>().saveUserDetails(token!, Get.find<ReadProfileController>().userModel);
         _isProfileCompleted = true;
       }
       else{

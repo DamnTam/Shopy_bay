@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/controller/verify_otp_controller.dart';
+import 'package:shopy_bay/data/models/create_profile_parameter_model.dart';
 import 'package:shopy_bay/data/models/user_profile.dart';
 
 import '../data/service/network_caller.dart';
@@ -16,27 +17,19 @@ class CreateProfileController extends GetxController {
 
   String get errorMessage => _errorMessage;
 
-  Future<bool> createProfile(String firstName, String lastName, String mobile,
-      String city, String shippingAddress) async {
-    Map<String, dynamic> body = {
-      'firstName': firstName,
-      'lastName': lastName,
-      'mobile': mobile,
-      'city': city,
-      'shippingAddress': shippingAddress,
-    };
+  Future<bool> createProfile(CreateProfileParameter createProfileParameter) async {
     _isLoading = true;
     update();
     final response = await NetWorkCaller().postRequest(
       url: Urls.createProfileUrl,
-      body: body,
+      body: createProfileParameter.toJson(),
       token: Get.find<VerifyOtpController>().token!,
     );
     _isLoading = false;
     if (response.isSuccess) {
       await Get.find<AuthController>().saveUserDetails(
           Get.find<VerifyOtpController>().token!,
-          UserProfile.fromJson(response.responseData['data']));
+          UserModel.fromJson(response.responseData['data']));
       update();
       return true;
     } else {

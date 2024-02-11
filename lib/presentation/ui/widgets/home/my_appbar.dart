@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/presentation/ui/screens/AuthScreen/email_screen.dart';
-import 'package:shopy_bay/presentation/ui/widgets/shopybay_text.dart';
+import 'package:shopy_bay/presentation/ui/screens/AuthScreen/otp_screen.dart';
+import 'package:shopy_bay/presentation/ui/widgets/home/shopybay_text.dart';
 import '../../screens/AuthScreen/create_profile_screen.dart';
 
 AppBar  myAppBar(BuildContext context) {
@@ -27,8 +28,8 @@ AppBar  myAppBar(BuildContext context) {
         ),
       ),
       InkWell(
-        onTap: () {
-          Get.find<AuthController>().clearAuthData();
+        onTap: () async {
+          await AuthController.clearAuthData();
           Get.offAll(() => const EmailScreen());
         },
         child: Padding(
@@ -37,11 +38,14 @@ AppBar  myAppBar(BuildContext context) {
               backgroundColor: Colors.grey[200], child: Icon(Icons.logout)),
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.only(right: 12.0),
-        child: CircleAvatar(
-            backgroundColor: Colors.grey[200],
-            child: Icon(Icons.add_alert_rounded)),
+      InkWell(
+        onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.only(right: 12.0),
+          child: CircleAvatar(
+              backgroundColor: Colors.grey[200],
+              child: Icon(Icons.add_alert_rounded)),
+        ),
       ),
     ],
   );

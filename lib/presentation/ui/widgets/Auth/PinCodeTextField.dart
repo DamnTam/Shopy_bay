@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../utility/app_colors.dart';
+import '../../utility/app_colors.dart';
 
 PinCodeTextField buildPinCodeTextField(BuildContext context,TextEditingController otpController) {
   return PinCodeTextField(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     controller: otpController,
-    length: 4,
+    length: 6,
     obscureText: false,
     animationType: AnimationType.fade,
     pinTheme: PinTheme(

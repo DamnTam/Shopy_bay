@@ -12,7 +12,7 @@ class ShopiBay extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home:const SplashScreen() ,
+      home:const SplashScreen(),
       theme: AppThemeData.lightThemeData,
       initialBinding: GetBinding(),
     );

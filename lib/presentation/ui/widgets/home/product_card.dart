@@ -47,137 +47,136 @@ class _ProductCardState extends State<ProductCard> {
                   width: MediaQuery.of(context).size.width * 0.20,
                 ),
               ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      border: Border.all(color: Colors.grey.withOpacity(.5))),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.015,
-                        vertical: 1),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.product.title.toString(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.035,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  '\$${widget.product.price.toString()}',
-                                  style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.035,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.015),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.yellow,
-                                  size:
-                                      MediaQuery.of(context).size.width * 0.035,
-                                ),
-                                Text(
-                                  widget.product.star.toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.035,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-
-                            //const SizedBox(width: 15),
-
-                            GetBuilder<CreateWishListController>(
-                                builder: (createWishListController) {
-                              return InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isFav = !isFav;
-                                    if (isFav) {
-                                      createWishListController.createWishList(
-                                          widget.product.id ?? 0);
-                                      Get.showSnackbar(
-                                        GetSnackBar(
-                                          title: 'Added to wishlist',
-                                          message: 'Product added to wishlist',
-                                          duration: const Duration(seconds: 2),
-                                        ),
-                                      );
-                                    } else {
-                                      createWishListController.removeWishList(
-                                          widget.product.id ?? 0);
-                                      Get.showSnackbar(
-                                        GetSnackBar(
-                                          title: 'Removed from wishlist',
-                                          message: 'Product removed from wishlist',
-                                          duration: const Duration(seconds: 2),
-                                        ),
-                                      );
-                                    }
-                                  });
-                                },
-                                child: GetBuilder<ProductWishListController>(
-                                  init: Get.find<ProductWishListController>(),
-                                    builder: (productWishListController) {
-                                      bool isFav = productWishListController.wishListProductIds().contains(widget.product.id);
-                                  return Card(
-                                    color: AppColors.primaryColor,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(3.0),
-                                      child: isFav
-                                          ? Icon(
-                                              Icons.favorite,
-                                              color: Colors.red,
-                                              size: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.035,
-                                            )
-                                          : Icon(
-                                              Icons.favorite_border,
-                                              color: Colors.white,
-                                              size: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.035,
-                                            ),
-                                    ),
-                                  );
-                                }),
-                              );
-                            }),
-                          ],
-                        ),
-                      ],
+              Spacer(),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
                     ),
+                    border: Border.all(color: Colors.grey.withOpacity(.5))),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.015,
+                      vertical: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 3),
+                      Text(
+                        widget.product.title.toString(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize:
+                                MediaQuery.of(context).size.width * 0.035,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '\$${widget.product.price.toString()}',
+                                style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.035,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                  width: MediaQuery.of(context).size.width *
+                                      0.015),
+                              Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                                size:
+                                    MediaQuery.of(context).size.width * 0.035,
+                              ),
+                              Text(
+                                widget.product.star.toString(),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.035,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+
+                          //const SizedBox(width: 15),
+
+                          GetBuilder<CreateWishListController>(
+                              builder: (createWishListController) {
+                            return InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isFav = !isFav;
+                                  if (isFav) {
+                                    createWishListController.createWishList(
+                                        widget.product.id ?? 0);
+                                    Get.showSnackbar(
+                                      GetSnackBar(
+                                        title: 'Added to wishlist',
+                                        message: 'Product added to wishlist',
+                                        duration: const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  } else {
+                                    createWishListController.removeWishList(
+                                        widget.product.id ?? 0);
+                                    Get.showSnackbar(
+                                      GetSnackBar(
+                                        title: 'Removed from wishlist',
+                                        message: 'Product removed from wishlist',
+                                        duration: const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                });
+                              },
+                              child: GetBuilder<ProductWishListController>(
+                                init: Get.find<ProductWishListController>(),
+                                  builder: (productWishListController) {
+                                    bool isFav = productWishListController.wishListProductIds().contains(widget.product.id);
+                                return Card(
+                                  color: AppColors.primaryColor,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: isFav
+                                        ? Icon(
+                                            Icons.favorite,
+                                            color: Colors.red,
+                                            size: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.035,
+                                          )
+                                        : Icon(
+                                            Icons.favorite_border,
+                                            color: Colors.white,
+                                            size: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.035,
+                                          ),
+                                  ),
+                                );
+                              }),
+                            );
+                          }),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               )

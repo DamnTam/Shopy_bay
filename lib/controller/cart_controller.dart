@@ -46,7 +46,7 @@ class CartController extends GetxController {
     _totalAmount.value = calculateTotalPrice();
   }
 
-  double  calculateTotalPrice() {
+  double calculateTotalPrice() {
     double total = 0;
     for (CartItem item in _cartModel.cartList ?? []) {
       log(item.product?.price.toString()??"0");

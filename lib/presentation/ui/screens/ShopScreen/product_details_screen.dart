@@ -139,16 +139,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         Get.offAll(() => const EmailScreen());
                         return;
                       } else {
-                        log('is color selected $_isSelectedColor');
-                        log('is size selected $_isSelectedSize');
                         if (_isSelectedColor != null &&
                             _isSelectedSize != null) {
                           final strColor = colorToColorName(_isSelectedColor!);
-                          log('is color selected $_isSelectedColor');
                           final response = await Get.find<AddToCartController>()
                               .addToCart(widget.id, strColor, _isSelectedSize!,
                                   counter);
-                          log(response.toString());
                           if (response) {
                             Get.showSnackbar(GetSnackBar(
                               message: 'Added cart!!',
@@ -234,7 +230,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               const SizedBox(width: 10),
               InkWell(
                 onTap: () {
-                  Get.to(() => ReviewScreen());
+                  Get.to(() => ReviewScreen(id: widget.id,));
                 },
                 child: Text(
                   'Reviews',

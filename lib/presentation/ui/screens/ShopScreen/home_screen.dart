@@ -4,6 +4,8 @@ import 'package:shopy_bay/controller/category_list_controller.dart';
 import 'package:shopy_bay/controller/home_carousel_product_controller.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
 import 'package:shopy_bay/data/models/product_model.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/new_product_section_screen.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/special_product_section_screen.dart';
 import '../../../../controller/main_bottomNavController.dart';
 import '../../../../controller/new_product_controller.dart';
 import '../../../../controller/special_product_controller.dart';
@@ -13,6 +15,7 @@ import '../../widgets/home/home_carousel.dart';
 import '../../widgets/home/my_appbar.dart';
 import '../../widgets/home/search_inputdecoration.dart';
 import '../../widgets/home/product_card.dart';
+import 'popular_product_section_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,94 +30,108 @@ class _HomeScreenState extends State<HomeScreen> {
     final width = MediaQuery.of(context).size.width;
 
     // final Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: myAppBar(context),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 7),
-              TextFormField(decoration: searchInputDecoration()),
-              const SizedBox(height: 7),
-              SizedBox(
-                height: width * 0.5,
-                child: GetBuilder<HomeCarouselProductController>(
-                    builder: (homeCarouselProductController) {
-                  return Visibility(
-                    visible: homeCarouselProductController.isLoading == false,
-                    replacement:
-                        const Center(child: CircularProgressIndicator()),
-                    child: HomeCarousel(
-                      homeCarouselProductList: homeCarouselProductController
-                              .homeCarouselProductModel
-                              .homeCarouselProductList ??
-                          [],
-                      onTap: () {},
-                    ),
-                  );
-                }),
-              ),
-              const SizedBox(height: 7),
-              SectionTitle(
-                text: 'All Categories',
-                onTap: () {
-                  Get.find<MainBottomNavController>().changeIndex(1);
-                },
-              ),
-              const SizedBox(height: 5),
-              buildCategoryContainer,
-              const SizedBox(height: 5),
-              SectionTitle(
-                text: 'Popular',
-                onTap: () {},
-              ),
-              const SizedBox(height: 5),
-
-              GetBuilder<PopularProductController>(
-                builder: (popularProductController) {
-                  return Visibility(
-                      visible: popularProductController.isLoading==false,
-                      replacement: Center(child: CircularProgressIndicator(),),
-                      child: buildProductCardByRemark(
-                        remarkProductList:popularProductController.remarkProductModel.ProductList??[]
-                      ));
-                }
-              ),
-              SectionTitle(
-                text: 'Special',
-                onTap: () {},
-              ),
-              const SizedBox(height: 5),
-              GetBuilder<SpecialProductController>(
-                  builder: (specialProductController) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: myAppBar(context),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 7),
+                TextFormField(decoration: searchInputDecoration()),
+                const SizedBox(height: 7),
+                SizedBox(
+                  height: width * 0.5,
+                  child: GetBuilder<HomeCarouselProductController>(
+                      builder: (homeCarouselProductController) {
                     return Visibility(
-                        visible: specialProductController.isLoading==false,
+                      visible: homeCarouselProductController.isLoading == false,
+                      replacement:
+                          const Center(child: CircularProgressIndicator()),
+                      child: HomeCarousel(
+                        homeCarouselProductList: homeCarouselProductController
+                                .homeCarouselProductModel
+                                .homeCarouselProductList ??
+                            [],
+                        onTap: () {},
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(height: 7),
+                SectionTitle(
+                  text: 'All Categories',
+                  onTap: () {
+                    Get.find<MainBottomNavController>().changeIndex(1);
+                  },
+                ),
+                const SizedBox(height: 5),
+                buildCategoryContainer,
+                const SizedBox(height: 5),
+                SectionTitle(
+                  text: 'Popular',
+                  onTap: () {
+                    Get.to(() => PopularProductSectionScreen(
+                          sectionName: 'Popular Product',
+                        ));
+                  },
+                ),
+                const SizedBox(height: 5),
+      
+                GetBuilder<PopularProductController>(
+                  builder: (popularProductController) {
+                    return Visibility(
+                        visible: popularProductController.isLoading==false,
                         replacement: Center(child: CircularProgressIndicator(),),
                         child: buildProductCardByRemark(
-                            remarkProductList:specialProductController.remarkProductModel.ProductList??[]
+                          remarkProductList:popularProductController.remarkProductModel.ProductList??[]
                         ));
                   }
-              ),
-              SectionTitle(
-                text: 'New',
-                onTap: () {},
-              ),
-              const SizedBox(height: 5),
-              GetBuilder<NewProductController>(
-                  builder: (newProductController) {
-                    return Visibility(
-                        visible: newProductController.isLoading==false,
-                        replacement: Center(child: CircularProgressIndicator(),),
-                        child: buildProductCardByRemark(
-                            remarkProductList:newProductController.remarkProductModel.ProductList??[]
+                ),
+                SectionTitle(
+                  text: 'Special',
+                  onTap: () {
+                    Get.to(() => SpecialProductSectionScreen(
+                          sectionName: 'Special Product',
                         ));
-                  }
-              ),
-            ],
+                  },
+                ),
+                const SizedBox(height: 5),
+                GetBuilder<SpecialProductController>(
+                    builder: (specialProductController) {
+                      return Visibility(
+                          visible: specialProductController.isLoading==false,
+                          replacement: Center(child: CircularProgressIndicator(),),
+                          child: buildProductCardByRemark(
+                              remarkProductList:specialProductController.remarkProductModel.ProductList??[]
+                          ));
+                    }
+                ),
+                SectionTitle(
+                  text: 'New',
+                  onTap: () {
+                    Get.to(() => NewProductSectionScreen(
+                          sectionName: 'New Product',
+                        ));
+                  },
+                ),
+                const SizedBox(height: 5),
+                GetBuilder<NewProductController>(
+                    builder: (newProductController) {
+                      return Visibility(
+                          visible: newProductController.isLoading==false,
+                          replacement: Center(child: CircularProgressIndicator(),),
+                          child: buildProductCardByRemark(
+                              remarkProductList:newProductController.remarkProductModel.ProductList??[]
+                          ));
+                    }
+                ),
+              ],
+            ),
           ),
         ),
       ),

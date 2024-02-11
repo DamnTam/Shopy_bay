@@ -7,7 +7,6 @@ import '../../../../data/models/product_model.dart';
 import '../../screens/ShopScreen/product_details_screen.dart';
 import '../../utility/app_colors.dart';
 
-
 class WishListProductCard extends StatefulWidget {
   const WishListProductCard({
     super.key,
@@ -46,93 +45,90 @@ class _WishListProductCardState extends State<WishListProductCard> {
                   widget.product.image.toString(),
                   width: MediaQuery.of(context).size.width * 0.20,
                   fit: BoxFit.fitWidth,
-
                 ),
               ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      border: Border.all(color: Colors.grey.withOpacity(.5))),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.015,
-                        vertical: 1),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.product.title.toString(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                              MediaQuery.of(context).size.width * 0.035,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  '\$${widget.product.price.toString()}',
-                                  style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontSize:
-                                      MediaQuery.of(context).size.width *
-                                          0.035,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.015),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.yellow,
-                                  size:
-                                  MediaQuery.of(context).size.width * 0.035,
-                                ),
-                                Text(
-                                  widget.product.star.toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize:
-                                      MediaQuery.of(context).size.width *
-                                          0.035,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-
-                            //const SizedBox(width: 15),
-
-                            GetBuilder<CreateWishListController>(
-                                builder: (createWishListController) {
-                                  return InkWell(
-                                    onTap: () async{
-                                      createWishListController.removeWishList(widget.product.id??0);
-                                      await Future.delayed(Duration(milliseconds: 200));
-                                      await Get.find<ProductWishListController>().getWishListProduct();
-                                    },
-                                    child: Icon(
-                                      Icons.delete_rounded,
-                                      size: MediaQuery.of(context).size.width * 0.06,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                }
-                            ),
-                          ],
-                        ),
-                      ],
+              Spacer(),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
                     ),
+                    border: Border.all(color: Colors.grey.withOpacity(.5))),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.015,
+                      vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.product.title.toString(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: MediaQuery.of(context).size.width * 0.035,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '\$${widget.product.price.toString()}',
+                                style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.035,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                  width: MediaQuery.of(context).size.width *
+                                      0.015),
+                              Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                                size: MediaQuery.of(context).size.width * 0.035,
+                              ),
+                              Text(
+                                widget.product.star.toString(),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.035,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+
+                          //const SizedBox(width: 15),
+
+                          GetBuilder<CreateWishListController>(
+                              builder: (createWishListController) {
+                            return InkWell(
+                              onTap: () async {
+                                createWishListController
+                                    .removeWishList(widget.product.id ?? 0);
+                                await Future.delayed(
+                                    Duration(milliseconds: 200));
+                                await Get.find<ProductWishListController>()
+                                    .getWishListProduct();
+                              },
+                              child: Icon(
+                                Icons.delete_rounded,
+                                size: MediaQuery.of(context).size.width * 0.06,
+                                color: Colors.black,
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               )

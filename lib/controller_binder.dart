@@ -11,6 +11,7 @@ import 'package:shopy_bay/controller/product_details_controller.dart';
 import 'package:shopy_bay/controller/read_profile_controller.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
 import 'controller/category_list_controller.dart';
+import 'controller/get_brand_controller.dart';
 import 'controller/get_review_controller.dart';
 import 'controller/home_carousel_product_controller.dart';
 import 'controller/main_bottomNavController.dart';
@@ -45,5 +46,6 @@ class GetBinding extends Bindings {
     Get.put(InvoiceCreateController());
     Get.put(GetReviewController());
     Get.put(CreateReviewController());
+    Get.put(BrandController());
   }
 }

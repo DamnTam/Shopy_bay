@@ -4,8 +4,6 @@ import 'package:shopy_bay/controller/get_brand_controller.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
 import 'package:shopy_bay/presentation/ui/utility/app_colors.dart';
 import 'package:shopy_bay/presentation/ui/widgets/home/brand_container.dart';
-import 'package:shopy_bay/presentation/ui/widgets/home/categories_container.dart';
-import '../../../../controller/category_list_controller.dart';
 
 class BrandScreen extends StatefulWidget {
   const BrandScreen({super.key});

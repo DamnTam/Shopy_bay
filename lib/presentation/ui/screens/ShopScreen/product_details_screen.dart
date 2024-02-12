@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/add_to_cart_controller.dart';
 import 'package:shopy_bay/controller/auth_controller.dart';
+import 'package:shopy_bay/controller/product_wish_list_controller.dart';
 import 'package:shopy_bay/data/models/product_details_model.dart';
 import 'package:shopy_bay/presentation/ui/screens/AuthScreen/email_screen.dart';
 import 'package:shopy_bay/presentation/ui/screens/ShopScreen/cart_screen.dart';
 import 'package:shopy_bay/presentation/ui/screens/ShopScreen/review_screen.dart';
 import 'package:shopy_bay/presentation/ui/widgets/product_details/products_details_carousel.dart';
+import '../../../../controller/create_wish_list_controller.dart';
 import '../../../../controller/product_details_controller.dart';
 import '../../utility/app_colors.dart';
 import '../../widgets/product_details/color_selector.dart';
@@ -25,6 +27,8 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Color? _isSelectedColor;
   String? _isSelectedSize;
+  ValueNotifier<int> counterNotifier = ValueNotifier<int>(1);
+  late ValueNotifier<bool> isFavNotifier;
 
   @override
   void initState() {
@@ -32,10 +36,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.find<ProductDetailsController>().getProductDetails(widget.id);
+      isFavNotifier = ValueNotifier<bool>(Get.find<ProductWishListController>()
+          .wishListProductIds()
+          .contains(widget.id));
     });
   }
-
-  int counter = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +55,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           replacement: const Center(child: CircularProgressIndicator()),
           child: Visibility(
             visible: productDetailsController.isDataLoaded == true,
-            replacement: const Center(child: Text('No Data Available',style: TextStyle(fontSize: 20),)),
+            replacement: const Center(
+                child: Text(
+              'No Data Available',
+              style: TextStyle(fontSize: 20),
+            )),
             child: Column(
               children: [
                 Expanded(
@@ -70,7 +79,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: LinearProgressIndicator(),
                           ),
                           child: ProductDetailsBody(
-                            productDetails: productDetailsController.productDetails,
+                            productDetails:
+                                productDetailsController.productDetails,
                           ),
                         ),
                       ],
@@ -144,14 +154,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           final strColor = colorToColorName(_isSelectedColor!);
                           final response = await Get.find<AddToCartController>()
                               .addToCart(widget.id, strColor, _isSelectedSize!,
-                                  counter);
+                                  counterNotifier.value);
                           if (response) {
                             Get.showSnackbar(GetSnackBar(
                               message: 'Added cart!!',
                               title: 'Cart added!!',
                               duration: const Duration(seconds: 2),
                             ));
-                             Get.to(() => CartScreen(id:widget.id,strColor: strColor,selectedSize: _isSelectedSize,cnt:counter));
+                            Get.to(() => CartScreen(
+                                id: widget.id,
+                                strColor: strColor,
+                                selectedSize: _isSelectedSize,
+                                cnt: counterNotifier.value));
                           } else {
                             Get.showSnackbar(GetSnackBar(
                               message:
@@ -189,28 +203,47 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 productDetails.product?.title ?? '',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               )),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    if (counter > 1) counter--;
-                  });
-                },
-                child: buildCounterContainer(
-                    icon: const Icon(Icons.remove),
-                    color: counter == 1 ? Colors.grey : AppColors.primaryColor),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if (counterNotifier.value > 1) {
+                        counterNotifier.value--;
+
+                      }
+                    },
+                    child: buildCounterContainer(
+                      color: counterNotifier.value == 1
+                          ? AppColors.primaryColor.withOpacity(.4)
+                          : AppColors.primaryColor,
+                      icon: const Icon(Icons.remove),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  ValueListenableBuilder(
+                      valueListenable: counterNotifier,
+                      builder: (context, value, child) {
+                        return Text(
+                          value.toString(),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      }),
+                  SizedBox(width: 10),
+                  InkWell(
+                    onTap: () {
+                      counterNotifier.value++;
+                      log(counterNotifier.value.toString());
+                    },
+                    child: buildCounterContainer(
+                      icon: const Icon(Icons.add),
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 5),
-              Text('$counter', style: TextStyle(fontSize: 24)),
-              const SizedBox(width: 5),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    counter++;
-                  });
-                },
-                child: buildCounterContainer(
-                    icon: const Icon(Icons.add), color: AppColors.primaryColor),
-              )
             ],
           ),
           Row(
@@ -230,7 +263,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               const SizedBox(width: 10),
               InkWell(
                 onTap: () {
-                  Get.to(() => ReviewScreen(id: widget.id,));
+                  Get.to(() => ReviewScreen(
+                        id: widget.id,
+                      ));
                 },
                 child: Text(
                   'Reviews',
@@ -241,21 +276,63 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
               ),
               const SizedBox(width: 10),
-              Card(
-                color: AppColors.primaryColor,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: Icon(
-                    Icons.favorite_border,
-                    color: Colors.white,
-                    size: 15,
-                  ),
-                ),
-              ),
+              GetBuilder<CreateWishListController>(
+                  builder: (createWishListController) {
+                return InkWell(
+                  onTap: () {
+                    isFavNotifier.value = !isFavNotifier.value;
+                    if (isFavNotifier.value) {
+                      createWishListController.createWishList(widget.id);
+                      Get.showSnackbar(
+                        GetSnackBar(
+                          title: 'Added to wishlist',
+                          message: 'Product added to wishlist',
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    } else {
+                      createWishListController.removeWishList(widget.id);
+                      Get.showSnackbar(
+                        GetSnackBar(
+                          title: 'Removed from wishlist',
+                          message: 'Product removed from wishlist',
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  },
+                  child: GetBuilder<ProductWishListController>(
+                      init: Get.find<ProductWishListController>(),
+                      builder: (productWishListController) {
+                        bool isFav = productWishListController
+                            .wishListProductIds()
+                            .contains(widget.id);
+                        return Card(
+                          color: AppColors.primaryColor,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: isFav
+                                ? Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.035,
+                                  )
+                                : Icon(
+                                    Icons.favorite_border,
+                                    color: Colors.white,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.035,
+                                  ),
+                          ),
+                        );
+                      }),
+                );
+              }),
             ],
           ),
           const SizedBox(height: 10),

@@ -21,7 +21,9 @@ class _IndividualCategoriesScreenState
   @override
   void initState() {
     super.initState();
-    Get.find<ProductController>().getProduct(widget.id);
+WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ProductController>().getProduct(widget.id);
+    });
   }
 
   @override

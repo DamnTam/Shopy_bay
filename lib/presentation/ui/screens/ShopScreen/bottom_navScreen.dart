@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/category_list_controller.dart';
+import 'package:shopy_bay/controller/get_brand_controller.dart';
 import 'package:shopy_bay/controller/home_carousel_product_controller.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
@@ -36,6 +37,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
       Get.find<PopularProductController>().getPopularProduct();
       Get.find<SpecialProductController>().getSpecialProduct();
       Get.find<NewProductController>().getNewProduct();
+      Get.find<BrandController>().getBrandList();
     });
 
 

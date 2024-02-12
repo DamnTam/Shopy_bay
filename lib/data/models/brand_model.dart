@@ -1,3 +1,29 @@
+class BrandModel {
+  String? msg;
+  List<Brand>? brandList;
+
+  BrandModel({this.msg, this.brandList});
+
+  BrandModel.fromJson(Map<String, dynamic> json) {
+    msg = json['msg'];
+    if (json['data'] != null) {
+      brandList = <Brand>[];
+      json['data'].forEach((v) {
+        brandList!.add(new Brand.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['msg'] = this.msg;
+    if (this.brandList != null) {
+      data['data'] = this.brandList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
 class Brand {
   int? id;
   String? brandName;

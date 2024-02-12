@@ -6,10 +6,10 @@ import '../../widgets/home/product_card.dart';
 
 class IndividualCategoriesScreen extends StatefulWidget {
   const IndividualCategoriesScreen(
-      {super.key, this.categoryName, required this.categoryId});
+      {super.key, this.name, required this.id});
 
-  final String? categoryName;
-  final int categoryId;
+  final String? name;
+  final int id;
 
   @override
   State<IndividualCategoriesScreen> createState() =>
@@ -21,7 +21,7 @@ class _IndividualCategoriesScreenState
   @override
   void initState() {
     super.initState();
-    Get.find<ProductController>().getProduct(widget.categoryId);
+    Get.find<ProductController>().getProduct(widget.id);
   }
 
   @override
@@ -29,7 +29,7 @@ class _IndividualCategoriesScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor.withOpacity(.5),
-        title: Text(widget.categoryName!),
+        title: Text(widget.name!),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {

@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopy_bay/data/models/category_list_model.dart';
 
+import '../../../../data/models/brand_model.dart';
 import '../../screens/ShopScreen/individual_categories_screen.dart';
 import '../../utility/app_colors.dart';
 
-class CategoriesContainer extends StatefulWidget {
-  const CategoriesContainer({
+class BrandContainer extends StatefulWidget {
+  const BrandContainer({
     super.key,
-    required this.category,
+    required this.brand,
   });
 
-  final Category category;
+  final Brand brand;
 
   @override
-  State<CategoriesContainer> createState() => _CategoriesContainerState();
+  State<BrandContainer> createState() => _BrandContainerState();
 }
 
-class _CategoriesContainerState extends State<CategoriesContainer> {
+class _BrandContainerState extends State<BrandContainer> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,8 +25,8 @@ class _CategoriesContainerState extends State<CategoriesContainer> {
         InkWell(
           onTap: () {
             Get.to(IndividualCategoriesScreen(
-              name: widget.category.categoryName,
-              id: widget.category.id??0,
+              name: widget.brand.brandName,
+              id: widget.brand.id??0,
             ));
           },
           child: Card(
@@ -38,15 +38,18 @@ class _CategoriesContainerState extends State<CategoriesContainer> {
             // color: AppColors.primaryColor.withOpacity(.2),
             child: Center(
                 child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Image.network(widget.category.categoryImg.toString(),
-                  width: 50, height: 50, fit: BoxFit.cover),
-            )),
+                  padding: EdgeInsets.all(10.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(widget.brand.brandImg.toString(),
+                        width: 50, height: 50, fit: BoxFit.cover),
+                  ),
+                )),
           ),
         ),
         const SizedBox(height: 3),
         Text(
-          widget.category.categoryName.toString(),
+          widget.brand.brandName.toString(),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(

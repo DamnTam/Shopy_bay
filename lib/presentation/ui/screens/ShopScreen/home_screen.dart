@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/category_list_controller.dart';
+import 'package:shopy_bay/controller/get_brand_controller.dart';
 import 'package:shopy_bay/controller/home_carousel_product_controller.dart';
 import 'package:shopy_bay/controller/popular_product_controller.dart';
 import 'package:shopy_bay/data/models/product_model.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/brand_screen.dart';
 import 'package:shopy_bay/presentation/ui/screens/ShopScreen/new_product_section_screen.dart';
 import 'package:shopy_bay/presentation/ui/screens/ShopScreen/special_product_section_screen.dart';
+import 'package:shopy_bay/presentation/ui/widgets/home/brand_container.dart';
 import '../../../../controller/main_bottomNavController.dart';
 import '../../../../controller/new_product_controller.dart';
 import '../../../../controller/special_product_controller.dart';
@@ -71,6 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 5),
                 buildCategoryContainer,
+                const SizedBox(height: 5),
+                SectionTitle(
+                  text: 'All Brands',
+                  onTap: () {
+                    Get.to(BrandScreen());
+                  },
+                ),
+                buildBrandContainer,
                 const SizedBox(height: 5),
                 SectionTitle(
                   text: 'Popular',
@@ -169,6 +180,28 @@ class _HomeScreenState extends State<HomeScreen> {
               return CategoriesContainer(
                 category: categoryList![index],
               );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(width: MediaQuery.of(context).size.width * 0.07);
+            },
+          ),
+        );
+      }),
+    );
+  }
+  SizedBox get buildBrandContainer {
+    return SizedBox(
+      height: 120,
+      child:
+      GetBuilder<BrandController>(builder: (brandController) {
+        return Visibility(
+          visible: brandController.isLoading == false,
+          replacement: const Center(child: CircularProgressIndicator()),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: brandController.brand.brandList?.length ?? 0,
+            itemBuilder: (context, index) {
+              return BrandContainer(brand: brandController.brand.brandList![index]);
             },
             separatorBuilder: (BuildContext context, int index) {
               return SizedBox(width: MediaQuery.of(context).size.width * 0.07);

@@ -11,8 +11,14 @@ class CreateReviewScreen extends StatefulWidget {
 
 class _CreateReviewScreenState extends State<CreateReviewScreen> {
   TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _productIdController = TextEditingController();
+  //TextEditingController _productIdController = TextEditingController();
   TextEditingController _ratingController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //_productIdController.text = widget.id.toString();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,14 +40,7 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
               maxLines: 3,
               controller: _descriptionController,
               decoration: const InputDecoration(
-                hintText: 'Description',
-              ),
-            ),
-            const SizedBox(height: 15),
-            TextFormField(
-              controller: _productIdController,
-              decoration: const InputDecoration(
-                hintText: 'product id',
+                hintText: 'Write Your Review',
               ),
             ),
             const SizedBox(height: 15),
@@ -62,7 +61,7 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
                     child: ElevatedButton(onPressed: (){
                       createReviewController.createReview(
                         _descriptionController.text,
-                        _productIdController.text,
+                         widget.id.toString(),
                         _ratingController.text
                       );
                     }, child: const Padding(

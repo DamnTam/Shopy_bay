@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/add_to_cart_controller.dart';
+import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/controller/cart_controller.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
 import '../../utility/app_colors.dart';
@@ -30,6 +31,7 @@ class _CartScreenState extends State<CartScreen> {
       Get.find<CartController>().getCart();
       counterr=widget.cnt??1;
     });
+   // log(Get.find<AuthController>().token.toString());
   }
 
   @override

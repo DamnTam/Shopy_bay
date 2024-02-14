@@ -162,6 +162,7 @@ class _CartScreenState extends State<CartScreen> {
                             widget.selectedSize ?? '',
                             counterr,
                         );
+                        await Future.delayed(const Duration(seconds: 1));
                         Get.to(() => const CheckoutScreen());
                       },
                       child: const Padding(

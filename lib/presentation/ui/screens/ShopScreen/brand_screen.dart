@@ -25,7 +25,7 @@ class _BrandScreenState extends State<BrandScreen> {
             backgroundColor: AppColors.primaryColor.withOpacity(.5),
             leading: IconButton(
               onPressed: () {
-                Get.find<MainBottomNavController>().changeIndex(0);
+                Get.back();
               },
               icon: const Icon(Icons.arrow_back_ios_new),
             ),

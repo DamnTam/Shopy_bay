@@ -169,8 +169,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 cnt: counterNotifier.value));
                           } else {
                             Get.showSnackbar(GetSnackBar(
-                              message:
-                                  Get.find<AddToCartController>().errorMessage,
+                              message:'Please login first',
                               duration: const Duration(seconds: 2),
                             ));
                             Get.find<CartController>().removeItem(widget.id);

@@ -128,14 +128,13 @@ class _ProductCardState extends State<ProductCard> {
                             builder: (createWishListController) {
                               return InkWell(
                                 onTap: () {
-                                  isFavNotifier.value =
-                                  !isFavNotifier.value;
+                                  isFavNotifier.value = !isFavNotifier.value;
                                   if (isFavNotifier.value) {
                                     createWishListController.createWishList(
                                         widget.product.id ?? 0);
                                     Get.showSnackbar(
                                       GetSnackBar(
-                                        title: 'Added to wishlist',
+                                        title: 'Added to wishlist!!',
                                         message:
                                         'Product added to wishlist',
                                         duration:

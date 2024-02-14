@@ -176,7 +176,7 @@ class _OtpScreenState extends State<OtpScreen> {
         widget.email, _otpController.text);
     if (isVerified) {
       if (verifyOtpController.isProfileCompleted) {
-        Get.to(() => const BottomNavScreen());
+        Get.offAll(() => const BottomNavScreen());
       }
       else {
         Get.to(() => const ProfileScreen());

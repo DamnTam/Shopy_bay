@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/create_review_controller.dart';
+import 'package:shopy_bay/presentation/ui/screens/ShopScreen/review_screen.dart';
 class CreateReviewScreen extends StatefulWidget {
   const CreateReviewScreen({super.key, required this.id});
   final int id;
@@ -58,12 +59,18 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
                   child: Visibility(
                     visible: createReviewController.isLoading==false,
                     replacement: const Center(child: CircularProgressIndicator()),
-                    child: ElevatedButton(onPressed: (){
-                      createReviewController.createReview(
+                    child: ElevatedButton(onPressed: () async {
+                      final response=await createReviewController.createReview(
                         _descriptionController.text,
                          widget.id.toString(),
                         _ratingController.text
                       );
+                      if(response){
+                        Get.to(()=>ReviewScreen(id: widget.id));
+                      }
+                      else{
+                        Get.snackbar('Error', 'Failed to create review');
+                      }
                     }, child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 15),
                       child: Text('Submit'),

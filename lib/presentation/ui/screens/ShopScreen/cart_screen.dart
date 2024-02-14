@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/add_to_cart_controller.dart';
-import 'package:shopy_bay/controller/auth_controller.dart';
 import 'package:shopy_bay/controller/cart_controller.dart';
 import 'package:shopy_bay/controller/main_bottomNavController.dart';
 import '../../utility/app_colors.dart';
@@ -37,9 +36,9 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
+      canPop: false,
       onPopInvoked: (_) {
-        // Get.find<MainBottomNavController>().changeIndex(1);
+         Get.find<MainBottomNavController>().changeIndex(1);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -134,24 +133,36 @@ class _CartScreenState extends State<CartScreen> {
                     ))
               ],
             ),
-            ElevatedButton(
-                onPressed: ()async{
-                  log('counter: $counterr');
-                  log('id: ${widget.id}');
-                  log('color: ${widget.strColor}');
-                  log('size: ${widget.selectedSize}');
-                  await Get.find<AddToCartController>().addToCart(
-                      widget.id ?? 0,
-                      widget.strColor ?? '',
-                      widget.selectedSize ?? '',
-                      counterr,
-                  );
-                  Get.to(() => const CheckoutScreen());
-                },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  child: Text('Checkout'),
-                ))
+            GetBuilder<AddToCartController>(
+              builder: (addToCartController) {
+                return Visibility(
+                  visible: addToCartController.isLoading == false,
+                  replacement: Center(
+                    child: const CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  child: ElevatedButton(
+                      onPressed: ()async{
+                        log('counter: $counterr');
+                        log('id: ${widget.id}');
+                        log('color: ${widget.strColor}');
+                        log('size: ${widget.selectedSize}');
+                        await Get.find<AddToCartController>().addToCart(
+                            widget.id ?? 0,
+                            widget.strColor ?? '',
+                            widget.selectedSize ?? '',
+                            counterr,
+                        );
+                        Get.to(() => const CheckoutScreen());
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        child: Text('Checkout'),
+                      )),
+                );
+              }
+            )
           ],
         ),
       ),

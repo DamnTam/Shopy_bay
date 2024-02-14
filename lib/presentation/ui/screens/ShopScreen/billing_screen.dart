@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -14,6 +16,7 @@ class _BillingScreenState extends State<BillingScreen> {
   late final WebViewController controller;
   @override
   void initState() {
+    //log('url: ${widget.url}');
     // TODO: implement initState
     super.initState();
     controller = WebViewController()
@@ -28,7 +31,40 @@ class _BillingScreenState extends State<BillingScreen> {
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
+            if (request.url.endsWith('success')) {
+              showDialog(context: context, builder: (context) {
+                return AlertDialog(
+                  title: const Text('Payment Success'),
+                  content: const Text('Your payment was successful'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('OK'),
+                    )
+                  ],
+                );
+              });
+              // dialog
+              return NavigationDecision.prevent;
+            }
+            else if (request.url.endsWith('Failed')) {
+              showDialog(context: context, builder: (context) {
+                return AlertDialog(
+                  title: const Text('Payment Cancelled'),
+                  content: const Text('Your payment was cancelled'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('OK'),
+                    )
+                  ],
+                );
+              });
+              // dialog
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
@@ -36,6 +72,8 @@ class _BillingScreenState extends State<BillingScreen> {
         ),
       )
       ..loadRequest(Uri.parse(widget.url));
+
+
   }
   @override
   Widget build(BuildContext context) {
@@ -43,11 +81,19 @@ class _BillingScreenState extends State<BillingScreen> {
       child: Scaffold(
         body:Padding(
           padding: const EdgeInsets.all(16.0),
-          child: WebViewWidget(
-            controller: controller,
+          child: Column(
+            children: [
+              Expanded(
+                child: WebViewWidget(
+                  controller: controller,
+
+                ),
+              ),
+
+            ],
           ),
+          )
         )
-      ),
     );
   }
 }

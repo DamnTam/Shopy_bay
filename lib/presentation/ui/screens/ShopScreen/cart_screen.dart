@@ -36,7 +36,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvoked: (_) {
          Get.find<MainBottomNavController>().changeIndex(1);
       },
@@ -144,6 +144,14 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   child: ElevatedButton(
                       onPressed: ()async{
+                        if(totalAmount.value==0.0){
+                          Get.showSnackbar(GetSnackBar(
+                            title: 'please add item to cart',
+                            message: 'No item in cart',
+                            duration: const Duration(seconds: 2),
+                          ));
+                          return;
+                        }
                         log('counter: $counterr');
                         log('id: ${widget.id}');
                         log('color: ${widget.strColor}');

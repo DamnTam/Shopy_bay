@@ -20,7 +20,18 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  ValueNotifier<bool> isFavNotifier = ValueNotifier<bool>(false);
+  late ValueNotifier<bool> isFavNotifier ;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      isFavNotifier = ValueNotifier<bool>(Get.find<ProductWishListController>()
+          .wishListProductIds()
+          .contains(widget.product.id));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

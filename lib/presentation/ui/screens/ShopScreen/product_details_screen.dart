@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopy_bay/controller/add_to_cart_controller.dart';
 import 'package:shopy_bay/controller/auth_controller.dart';
+import 'package:shopy_bay/controller/cart_controller.dart';
 import 'package:shopy_bay/controller/product_wish_list_controller.dart';
 import 'package:shopy_bay/data/models/product_details_model.dart';
 import 'package:shopy_bay/presentation/ui/screens/AuthScreen/email_screen.dart';
@@ -172,6 +173,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   Get.find<AddToCartController>().errorMessage,
                               duration: const Duration(seconds: 2),
                             ));
+                            Get.find<CartController>().removeItem(widget.id);
                             Get.offAll(() => const EmailScreen());
                           }
                         }
